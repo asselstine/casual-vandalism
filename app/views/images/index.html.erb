@@ -1,24 +1,31 @@
-<h1>bathroom graffiti</h1>
-<div class="controls">
+<h1 class="no-select">bathroom graffiti</h1>
+<div class="controls no-select">
 
   <section class="browse_mode">
     <a id="select_draw">Draw!</a>
   </section>
+  <section class="select_mode">
+    <p>Select a drawing area by click dragging on the page.</p>
+    <br/>
+    <a class="cancel_select">Cancel</a>
+  </section>
   <section class="edit_mode">
       <a id="upload" value="upload">Upload</a>
+    <br/>
+        <a id="clear">Clear</a>
     <br/>
       <a id="cancel">Cancel</a>
   </section>
 </div>
 
 <%= form_tag images_path, :method => "delete" do %>
-    <%= submit_tag "Clear" %>
+    <%= submit_tag "Delete all" %>
 <% end %>
 <br/>
 <canvas id="canvas">
 </canvas>
 
-<div class='canvas_ghost'>place drawing area</div>
+<div class='canvas_ghost'></div>
 
 
 <% @images.each do |image| %>

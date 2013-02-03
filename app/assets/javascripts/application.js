@@ -13,4 +13,43 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+var i = 0;
+$(document).ready(function () {
+    $(window).scroll(function() {
+        if (window.matchMedia("(min-device-width: 320px) and (max-device-width: 480px)").matches) {
+            doUpdateFonts();
+        }
+    });
+    $(window).resize(function () {
+       if (window.matchMedia("(min-device-width: 320px) and (max-device-width: 480px)").matches) {
+           doUpdateFonts();
+       }
+    });
+});
 
+function doUpdateFonts() {
+    window.setTimeout(updateFonts, 200);
+}
+
+function updateFonts() {
+    try {
+        var fontSize = window.innerWidth / 16;
+        var newTop = $(window).scrollTop() + "px";
+        var newLeft = $(document).scrollLeft() + "px";
+        $(".controls a").css("font-size", fontSize + "px");
+        $(".controls").css("position", "absolute");
+        //addClientWidth("top: " + newTop + ", " + newLeft);
+        $(".controls").css("top", newTop);
+        $(".controls").css("left", newLeft);
+    } catch (e) {
+        alert(e.message);
+    }
+    /*
+
+    $(".controls").css("top", newTop);
+    */
+}
+
+function addClientWidth(msg) {
+    $("body").prepend( "<p>" + msg + "</p>");
+}

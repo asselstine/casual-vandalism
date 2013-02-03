@@ -17,23 +17,39 @@ h1 {
     font-size: 4em;
 }
 
-.controls {
+* {
+    font-family: Helvetica;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
 
+.controls {
     position: fixed;
     z-index: 1;
-    font-size: 2.0em;
-    line-height: 2.0em;
+}
+
+.controls a,p {
+    margin: 4px;
+    opacity: 0.8;
+    text-align: center;
+    cursor: pointer;
+    float: left;
 }
 
 .controls a {
-    margin: 4px;
+    font-size: 2em;
+    line-height: 2em;
     background: #454545;
-    opacity: 0.8;
-    text-align: center;
+    color: #ffe60d;
     width: 4em;
-    cursor: pointer;
-    color: #ffe60d !important;
-    float: left;
+    z-index: 10;
+}
+
+.controls p {
+    font-size: 1em;
+    width: 8em;
+    background: #fffdd1;
+    color: #454545;
 }
 
 .controls a:hover {
@@ -45,18 +61,24 @@ h1 {
     display: none;
 }
 
+.select_mode {
+    display: none;
+}
+
 
 .canvas_ghost {
     position: absolute;
-    border: 1px dashed #AAAAAA;
+    border: 3px dashed #454545;
     width: 200px;
     height: 200px;
 }
 
 body {
     background-image: url('/assets/vla-alien.jpeg');
+    height: 3200px;
 }
 
 canvas {
     position: absolute;
+    border: 1px solid black;
 }

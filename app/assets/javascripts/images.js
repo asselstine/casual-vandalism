@@ -1,3 +1,45 @@
+//Where the 'draw' canvas select starts
+var selectStartX;
+var selectStartY;
+var selectEndX;
+var selectEndY;
+
+function is_touch_device() {
+    return !!('ontouchstart' in window) // works on most browsers
+        || !!('onmsgesturechange' in window); // works on ie10
+}
+
+function select_start(e) {
+    selectStartX = e.pageX;
+    selectStartY = e.pageY;
+    //show ghost, and resize it
+    set_ghost(e.pageY, e.pageX, "1px", "1px");
+    $(".canvas_ghost").show();
+}
+
+function select_move(e) {
+    selectEndX = e.pageX;
+    selectEndY = e.pageY;
+    var newWidth = selectEndX - selectStartX;
+    var newHeight = selectEndY - selectStartY;
+    $(".canvas_ghost")  .css("width",newWidth+"px")
+        .css("height", newHeight+"px");
+}
+
+function select_end() {
+    $("canvas").css("top", $(".canvas_ghost").css("top") )
+        .css("left", $(".canvas_ghost").css("left"))
+        .css("width", $(".canvas_ghost").css("width"))
+        .css("height", $(".canvas_ghost").css("height"));
+    $("canvas")[0].width = $(".canvas_ghost").width();
+    $("canvas")[0].height = $(".canvas_ghost").height();
+    //e.pageY, e.pageX
+    switch_to_edit_mode();
+    $(document).unbind(".select");
+    $("body").unbind(".select");
+    $(".canvas_ghost").hide();
+}
+
 $(document).ready(function () {
     init_canvas();
     $('canvas').hide();
@@ -7,30 +49,31 @@ $(document).ready(function () {
     $("#cancel").click(function (){
         switch_to_browse_mode();
     });
+    $("#clear").click(function () {
+       clear_canvas();
+    });
+    $(".cancel_select").click(function () {
+       switch_to_browse_mode();
+    });
     $("#select_draw").click(function (e) {
-        normalizeEvent(e);
-
-        if ($(document).width() > 420) {
-            $('canvas').hide();
-            $(".canvas_ghost").show();
-            move_ghost(e.pageY, e.pageX);
-
-            //add the ghost follow
-            $(document).bind("mousemove.select", function (e) {
-                move_ghost(e.pageY, e.pageX);
-            });
-
-            //make sure ghost clears when the user clicks
-            $(document).bind("mousedown.select", function (e) {
-                //remove ghost listeners
-                $(document).unbind(".select");
-                //hide the ghost
-                $(".canvas_ghost").hide();
-
-                switch_to_edit_mode(e.pageY, e.pageX);
-            });
+        $(".browse_mode").hide();
+        $(".select_mode").show();
+        if (!is_touch_device()) {
+            $(document).bind("mousedown.select", select_start);
+            $(document).bind("mousemove.select", select_move);
+            $(document).bind("mouseup.select", select_end);
         } else {
-            switch_to_mobile_edit_mode();
+            $("body").bind("touchstart.select", function (e) {
+                e.preventDefault();
+                normalizeEvent(e);
+                select_start(e);
+            });
+            $("body").bind("touchmove.select", function (e) {
+                normalizeEvent(e);
+                select_move(e);
+            });
+            $("body").bind("touchend.select", select_end);
+            $("body").bind("touchcancel.select", select_end);
         }
     });
 });
@@ -40,23 +83,30 @@ function move_ghost(top, left) {
     $('.canvas_ghost').css("left", left);
 }
 
-function switch_to_mobile_edit_mode() {
-    switch_to_edit_mode($(window).scrollTop(), $(window).scrollLeft());
+function set_ghost(top, left, width, height) {
+    $('.canvas_ghost')  .css("top", top)
+                        .css("left", left)
+        .css("width",width)
+        .css("height", height);
 }
 
-function switch_to_edit_mode(top, left) {
-    move_canvas(top, left);
+function switch_to_edit_mode() {
+    $(document).unbind(".select");
     clear_canvas();
     $("canvas").show();
+    $(".select_mode").hide();
     $(".browse_mode").hide();
     $(".edit_mode").show();
 }
 
 function switch_to_browse_mode() {
-    $(".browse_mode").show();
+    $(document).unbind(".select");
+    $(".canvas_ghost").hide();
     $(".edit_mode").hide();
-    clear_canvas();
+    $(".select_mode").hide();
     $('canvas').hide();
+    clear_canvas();
+    $(".browse_mode").show();
 }
 
 function move_canvas(top, left) {
@@ -108,10 +158,8 @@ function bind_events() {
     $('#canvas').mousemove(move);
     $('#canvas').mousedown(start);
     $('#canvas').mouseup(stop);
-    $('#canvas').mouseleave(stop);
+   // $('#canvas').mouseleave(stop);
 }
-
-
 
 function addCanvasClick(e, isDragging) {
     var offset = $("#canvas").offset();
@@ -133,7 +181,7 @@ function move(e) {
 
 function stop(e) {
     paint = false;
-   // alert("collected number of events: [" + clickX.length+"]");
+    //alert("collected number of events: [" + clickX.length+"]");
 }
 
 function addClick(x, y, isDragging) {
@@ -193,11 +241,11 @@ function upload() {
         type: "POST",
         dataType: "json",
         data: fd,
-        success: function () {
-            window.location.href = "/";
+        success: function (data, status) {
+            $("body").append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
         },
-        error: function () {
-
+        complete : function () {
+            switch_to_browse_mode();
         },
         processData: false,  // tell jQuery not to process the data
         contentType: false   // tell jQuery not to set contentType
@@ -208,7 +256,7 @@ function normalizeEvent(e, isDragging) {
     var props = ['clientX', 'clientY', 'pageX', 'pageY'],
         i, l, n;
 
-    if (['touchstart', 'touchmove', 'touchend'].indexOf(e.type) > -1) {
+    if (['touchstart', 'touchmove', 'touchend', 'touchcancel'].indexOf(e.type) > -1) {
         for (i = 0, l = props.length; i < l; i++) {
             n = props[i];
             e[n] = e.originalEvent.targetTouches[0][n];
