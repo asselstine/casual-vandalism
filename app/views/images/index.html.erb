@@ -1,0 +1,17 @@
+<h1>bathroom graffiti</h1>
+<button id="select_draw">Draw!</button>
+<button id="upload" value="upload">Upload</button>
+<%= form_tag images_path, :method => "delete" do %>
+    <%= submit_tag "Clear" %>
+<% end %>
+
+<br/>
+<canvas id="canvas">
+</canvas>
+
+<div class='canvas_ghost'>place drawing area</div>
+
+
+<% @images.each do |image| %>
+    <img style="z-index: -1; position: absolute; left: <%=image.x%>px; top: <%=image.y%>px;" src="<%=image.canvas.url%>"/>
+<% end %>
