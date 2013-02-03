@@ -12,18 +12,39 @@
  *= require_tree .
  */
 
-#cancel {
-    display: none;
-}
-#upload {
-    display:none;
+h1 {
+    color: white;
+    font-size: 4em;
 }
 
 .controls {
+
     position: fixed;
     z-index: 1;
     font-size: 2.0em;
+    line-height: 2.0em;
 }
+
+.controls a {
+    margin: 4px;
+    background: #454545;
+    opacity: 0.8;
+    text-align: center;
+    width: 4em;
+    cursor: pointer;
+    color: #ffe60d !important;
+    float: left;
+}
+
+.controls a:hover {
+    color: #fffec9;
+    opacity: 0.9;
+}
+
+.edit_mode {
+    display: none;
+}
+
 
 .canvas_ghost {
     position: absolute;

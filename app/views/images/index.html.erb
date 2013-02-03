@@ -1,16 +1,19 @@
 <h1>bathroom graffiti</h1>
 <div class="controls">
 
-  <%= form_tag images_path, :method => "delete" do %>
-      <%= submit_tag "Clear" %>
-  <% end %>
-
-  <button id="select_draw">Draw!</button>   <br/>
-    <button id="upload" value="upload">Upload</button>
-
-  <button id="cancel">Cancel</button>
+  <section class="browse_mode">
+    <a id="select_draw">Draw!</a>
+  </section>
+  <section class="edit_mode">
+      <a id="upload" value="upload">Upload</a>
+    <br/>
+      <a id="cancel">Cancel</a>
+  </section>
 </div>
 
+<%= form_tag images_path, :method => "delete" do %>
+    <%= submit_tag "Clear" %>
+<% end %>
 <br/>
 <canvas id="canvas">
 </canvas>

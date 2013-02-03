@@ -48,15 +48,13 @@ function switch_to_edit_mode(top, left) {
     move_canvas(top, left);
     clear_canvas();
     $("canvas").show();
-    $("#select_draw").hide();
-    $("#cancel").show();
-    $("#upload").show();
+    $(".browse_mode").hide();
+    $(".edit_mode").show();
 }
 
 function switch_to_browse_mode() {
-    $("#upload").hide();
-    $("#select_draw").show();
-    $("#cancel").hide();
+    $(".browse_mode").show();
+    $(".edit_mode").hide();
     clear_canvas();
     $('canvas').hide();
 }
