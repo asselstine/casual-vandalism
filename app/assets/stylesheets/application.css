@@ -12,12 +12,28 @@
  *= require_tree .
  */
 
+#cancel {
+    display: none;
+}
+#upload {
+    display:none;
+}
+
+.controls {
+    position: fixed;
+    z-index: 1;
+    font-size: 2.0em;
+}
 
 .canvas_ghost {
     position: absolute;
-    border: 1px dashed #DDDDDD;
+    border: 1px dashed #AAAAAA;
     width: 200px;
     height: 200px;
+}
+
+body {
+    background-image: url('/assets/vla-alien.jpeg');
 }
 
 canvas {

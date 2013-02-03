@@ -4,29 +4,67 @@ $(document).ready(function () {
     $('canvas').attr("width", "200");
     $('canvas').attr("height", "200");
     $('.canvas_ghost').hide();
-
+    $("#cancel").click(function (){
+        switch_to_browse_mode();
+    });
     $("#select_draw").click(function (e) {
         normalizeEvent(e);
 
-        $('canvas').hide();
-        $(".canvas_ghost").show();
-        $('.canvas_ghost').css("top", e.pageY);
-        $('.canvas_ghost').css("left", e.pageX);
-        $(document).bind("mousemove.select", function (e) {
-            $('.canvas_ghost').css("top", e.pageY);
-            $('.canvas_ghost').css("left", e.pageX);
-        });
-        $(document).bind("mousedown.select", function (e) {
-            $('canvas').css("top", e.pageY);
-            $('canvas').css("left", e.pageX);
-            $(document).unbind(".select");
-            $(".canvas_ghost").hide();
-            clear_canvas();
-            $("canvas").show();
-        });
+        if ($(document).width() > 420) {
+            $('canvas').hide();
+            $(".canvas_ghost").show();
+            move_ghost(e.pageY, e.pageX);
 
+            //add the ghost follow
+            $(document).bind("mousemove.select", function (e) {
+                move_ghost(e.pageY, e.pageX);
+            });
+
+            //make sure ghost clears when the user clicks
+            $(document).bind("mousedown.select", function (e) {
+                //remove ghost listeners
+                $(document).unbind(".select");
+                //hide the ghost
+                $(".canvas_ghost").hide();
+
+                switch_to_edit_mode(e.pageY, e.pageX);
+            });
+        } else {
+            switch_to_mobile_edit_mode();
+        }
     });
 });
+
+function move_ghost(top, left) {
+    $('.canvas_ghost').css("top", top);
+    $('.canvas_ghost').css("left", left);
+}
+
+function switch_to_mobile_edit_mode() {
+    switch_to_edit_mode($(window).scrollTop(), $(window).scrollLeft());
+}
+
+function switch_to_edit_mode(top, left) {
+    move_canvas(top, left);
+    clear_canvas();
+    $("canvas").show();
+    $("#select_draw").hide();
+    $("#cancel").show();
+    $("#upload").show();
+}
+
+function switch_to_browse_mode() {
+    $("#upload").hide();
+    $("#select_draw").show();
+    $("#cancel").hide();
+    clear_canvas();
+    $('canvas').hide();
+}
+
+function move_canvas(top, left) {
+    $('canvas').css("top", top);
+    $('canvas').css("left", left);
+}
 
 color = "#df4b26";
 size = 4;
@@ -46,6 +84,7 @@ function clear_canvas() {
     clickDrag = new Array();
     currentColor = new Array();
     currentSize = new Array();
+    redraw();
 }
 
 function init_canvas() {
@@ -73,6 +112,8 @@ function bind_events() {
     $('#canvas').mouseup(stop);
     $('#canvas').mouseleave(stop);
 }
+
+
 
 function addCanvasClick(e, isDragging) {
     var offset = $("#canvas").offset();
