@@ -36,6 +36,8 @@ module Stallgraffiti
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
+    config.log_level = :debug
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
@@ -58,5 +60,8 @@ module Stallgraffiti
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    #disable stylesheet generation
+    config.generators.stylesheets = false
   end
 end

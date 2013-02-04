@@ -10,8 +10,12 @@ class ImagesController < ApplicationController
     end
   end
 
+  #DELETE /images
   def delete_all
-    Image.delete_all
+    for image in Image.all
+      image.canvas.destroy
+      image.delete
+    end
     @images = []
     redirect_to '/'
   end
