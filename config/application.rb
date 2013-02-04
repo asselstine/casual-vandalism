@@ -63,5 +63,8 @@ module Stallgraffiti
 
     #disable stylesheet generation
     config.generators.stylesheets = false
+
+    #required by Devise for Heroku deployments
+    config.assets.initialize_on_precompile = false
   end
 end

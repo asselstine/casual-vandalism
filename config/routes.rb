@@ -1,4 +1,10 @@
 Stallgraffiti::Application.routes.draw do
+
+  devise_for :users
+
+  resources :users
+
+
   resources :images
   match "images" => "images#delete_all", :via => :delete
   root :to => "images#index"

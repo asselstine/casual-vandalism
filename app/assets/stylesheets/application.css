@@ -19,6 +19,9 @@ h1 {
 
 * {
     font-family: Helvetica;
+}
+
+.controls {
     -moz-user-select: none;
     -webkit-user-select: none;
 }

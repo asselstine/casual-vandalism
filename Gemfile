@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'devise'
+
 gem 'paperclip'
 
 gem 'rails', '3.2.11'
