@@ -3,7 +3,7 @@ require 'rmagick'
 class Wall < ActiveRecord::Base
   attr_accessible :header_color, :name, :background
   has_attached_file :background, #:processors => [:auto_orient],
-                    :styles => { :large => "1200x1200>" }
+                    :styles => { :original => "1200x1200>" }
   has_many :revisions, :dependent => :destroy
   has_many :images, :dependent => :destroy
   validates :name, :format => { :with => /[a-zA-Z0-9 ]+/, :message => "Only letters, numbers or spaces are allowed." }
@@ -13,10 +13,10 @@ class Wall < ActiveRecord::Base
      #build an image using the current background and all the images
 
     #current background image
-    comp = get_magick_image_from_url background.url(:large)
+    comp = get_magick_image_from_url background.url
 
     for image in images
-      comp.composite!( get_magick_image_from_url(image.canvas.url(:original)), image.x, image.y, Magick::AtopCompositeOp )
+      comp.composite!( get_magick_image_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
     end
 
     #copy that image out to a file
