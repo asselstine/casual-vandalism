@@ -1,4 +1,6 @@
 <h1 class="no-select">bathroom graffiti</h1>
+<%= link_to 'Edit', edit_wall_path(@wall) %> |
+<%= link_to 'Back', walls_path %>
 <%= form_tag destroy_user_session_path, :method => :delete do %>
     <%= submit_tag "Sign out" %>
 <% end %>
@@ -29,7 +31,6 @@
 </canvas>
 
 <div class='canvas_ghost'></div>
-
 
 <% @images.each do |image| %>
     <img style="z-index: -1; position: absolute; left: <%=image.x%>px; top: <%=image.y%>px;" src="<%=image.canvas.url%>"/>

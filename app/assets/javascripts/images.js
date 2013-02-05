@@ -40,44 +40,6 @@ function select_end() {
     $(".canvas_ghost").hide();
 }
 
-$(document).ready(function () {
-    init_canvas();
-    $('canvas').hide();
-    $('canvas').attr("width", "200");
-    $('canvas').attr("height", "200");
-    $('.canvas_ghost').hide();
-    $("#cancel").click(function (){
-        switch_to_browse_mode();
-    });
-    $("#clear").click(function () {
-       clear_canvas();
-    });
-    $(".cancel_select").click(function () {
-       switch_to_browse_mode();
-    });
-    $("#select_draw").click(function (e) {
-        $(".browse_mode").hide();
-        $(".select_mode").show();
-        if (!is_touch_device()) {
-            $(document).bind("mousedown.select", select_start);
-            $(document).bind("mousemove.select", select_move);
-            $(document).bind("mouseup.select", select_end);
-        } else {
-            $("body").bind("touchstart.select", function (e) {
-                e.preventDefault();
-                normalizeEvent(e);
-                select_start(e);
-            });
-            $("body").bind("touchmove.select", function (e) {
-                normalizeEvent(e);
-                select_move(e);
-            });
-            $("body").bind("touchend.select", select_end);
-            $("body").bind("touchcancel.select", select_end);
-        }
-    });
-});
-
 function move_ghost(top, left) {
     $('.canvas_ghost').css("top", top);
     $('.canvas_ghost').css("left", left);
@@ -139,6 +101,10 @@ function init_canvas() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext("2d");
     bind_events();
+    $('canvas').hide();
+    $('canvas').attr("width", "200");
+    $('canvas').attr("height", "200");
+    $('.canvas_ghost').hide();
 }
 
 function bind_events() {
@@ -159,6 +125,36 @@ function bind_events() {
     $('#canvas').mousedown(start);
     $('#canvas').mouseup(stop);
    // $('#canvas').mouseleave(stop);
+    $("#cancel").click(function (){
+        switch_to_browse_mode();
+    });
+    $("#clear").click(function () {
+        clear_canvas();
+    });
+    $(".cancel_select").click(function () {
+        switch_to_browse_mode();
+    });
+    $("#select_draw").click(function (e) {
+        $(".browse_mode").hide();
+        $(".select_mode").show();
+        if (!is_touch_device()) {
+            $(document).bind("mousedown.select", select_start);
+            $(document).bind("mousemove.select", select_move);
+            $(document).bind("mouseup.select", select_end);
+        } else {
+            $("body").bind("touchstart.select", function (e) {
+                e.preventDefault();
+                normalizeEvent(e);
+                select_start(e);
+            });
+            $("body").bind("touchmove.select", function (e) {
+                normalizeEvent(e);
+                select_move(e);
+            });
+            $("body").bind("touchend.select", select_end);
+            $("body").bind("touchcancel.select", select_end);
+        }
+    });
 }
 
 function addCanvasClick(e, isDragging) {
@@ -233,16 +229,21 @@ function getImageBlob() {
 
 function upload() {
     var fd = new FormData();
-    fd.append("image[x]", $("#canvas").css("left"));
-    fd.append("image[y]", $("#canvas").css("top"));
+
+    var poffset = $("#canvas").parent().offset();
+    var top = $("#canvas").offset().top - poffset.top;
+    var left = $("#canvas").offset().left - poffset.left;
+
+    fd.append("image[x]", left);
+    fd.append("image[y]", top);
     fd.append("image[canvas]", getImageBlob());
     $.ajax({
-        url: "/images.json",
+        url: document.URL + "/images.json",
         type: "POST",
         dataType: "json",
         data: fd,
         success: function (data, status) {
-            $("body").append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
+            $(".background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
         },
         complete : function () {
             switch_to_browse_mode();

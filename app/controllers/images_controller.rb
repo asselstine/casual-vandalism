@@ -1,7 +1,5 @@
 class ImagesController < ApplicationController
 
-  before_filter :authenticate_user!
-
   # GET /images
   # GET /images.json
   def index
@@ -15,6 +13,7 @@ class ImagesController < ApplicationController
 
   #DELETE /images
   def delete_all
+
     for image in Image.all
       image.canvas.destroy
       image.delete
@@ -53,12 +52,15 @@ class ImagesController < ApplicationController
   # POST /images
   # POST /images.json
   def create
+    @wall = Wall.find(params[:wall_id])
     @image = Image.new(params[:image])
-
+    @image.wall = @wall
+    @wall.images<<@image
+    rev = @wall.build_revision
     respond_to do |format|
       if @image.save
         format.html { redirect_to @image, notice: 'Image was successfully created.' }
-        format.json { render json: { :image => @image, :image_url => @image.canvas.url }, status: :created, location: @image }
+        format.json { render json: { :image => @image, :background_url => rev.image.url(:large) }, status: :created, location: @image }
       else
         format.html { render action: "new" }
         format.json { render json: @image.errors, status: :unprocessable_entity }

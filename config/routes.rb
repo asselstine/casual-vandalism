@@ -1,14 +1,21 @@
 Stallgraffiti::Application.routes.draw do
 
+  resources :revisions
+
+
+  resources :walls do
+    resources :images
+  end
+
+  resources :images
+
   devise_for :users
 
   resources :users
 
+  root :to => "walls#index"
 
-  resources :images
-  match "images" => "images#delete_all", :via => :delete
-  root :to => "images#index"
-
+  get ":wall_name" => "walls#show_by_name"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

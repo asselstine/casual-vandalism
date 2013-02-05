@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204203642) do
+ActiveRecord::Schema.define(:version => 20130204220949) do
 
   create_table "images", :force => true do |t|
     t.integer  "x"
@@ -22,7 +22,20 @@ ActiveRecord::Schema.define(:version => 20130204203642) do
     t.string   "canvas_content_type"
     t.integer  "canvas_file_size"
     t.datetime "canvas_updated_at"
+    t.integer  "wall_id"
   end
+
+  create_table "revisions", :force => true do |t|
+    t.integer  "wall_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  add_index "revisions", ["wall_id"], :name => "index_revisions_on_wall_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"
@@ -42,5 +55,17 @@ ActiveRecord::Schema.define(:version => 20130204203642) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "walls", :force => true do |t|
+    t.string   "name"
+    t.string   "header_color"
+    t.integer  "user_id"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.string   "background_file_name"
+    t.string   "background_content_type"
+    t.integer  "background_file_size"
+    t.datetime "background_updated_at"
+  end
 
 end

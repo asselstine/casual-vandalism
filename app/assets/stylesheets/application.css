@@ -14,11 +14,27 @@
 
 h1 {
     color: white;
+    background-color: black;
     font-size: 4em;
+}
+
+a.btn {
+    background: white;
+    color: black;
 }
 
 * {
     font-family: Helvetica;
+}
+
+h1 {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.no-select {
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .controls {
@@ -78,10 +94,13 @@ h1 {
 
 body {
     background-image: url('/assets/vla-alien.jpeg');
-    height: 3200px;
+    height: 100%;
+/*    background-attachment:fixed;*/
+    background-color: black;
 }
 
 canvas {
     position: absolute;
     border: 1px solid black;
+    cursor: pointer;
 }
