@@ -34,7 +34,7 @@ class Wall < ActiveRecord::Base
     return rev
   end
   def get_magick_image_from_url url
-    if url.match(/^system/)
+    if url.match(/^\/system/)
       url = "http://localhost:3000#{url.split('?')[0]}"
     end
     comp = Magick::ImageList.new
