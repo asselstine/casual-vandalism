@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'devise'
 
 #For image processing
-gem 'rmagick'
+gem 'rmagick', '>=2.11'
 
 #Amazon S3
 gem 'aws-sdk'
