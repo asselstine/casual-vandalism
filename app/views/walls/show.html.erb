@@ -1,0 +1,49 @@
+<style type="text/css">
+  * {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+  }
+</style>
+<h1 class="no-select"><%=@wall.name%><%= link_to " walls", walls_path, :class => "btn" %></h1>
+
+<div class="controls no-select">
+
+  <section class="browse_mode">
+    <a id="select_draw">Draw!</a>
+  </section>
+  <section class="select_mode">
+    <p>Select a drawing area by click dragging on the page.</p>
+    <br/>
+    <a class="cancel_select">Cancel</a>
+  </section>
+  <section class="edit_mode">
+    <a id="upload" value="upload">Upload</a>
+    <br/>
+    <a id="clear">Clear</a>
+    <br/>
+    <a id="cancel">Cancel</a>
+  </section>
+</div>
+
+<br/>
+
+<div class="canvas_container">
+  <img class="background" src='<%="#{@wall.revisions.last.image.url(:large)}"%>'/>
+  <canvas id="canvas">
+  </canvas>
+</div>
+
+<div class='canvas_ghost'></div>
+
+<%= form_tag destroy_user_session_path, :method => :delete do %>
+    <%= submit_tag "Sign out" %>
+<% end %>
+<%= form_tag wall_images_path(@wall), :method => "delete" do %>
+    <%= submit_tag "Delete all" %>
+<% end %>
+
+ <script type="text/javascript">
+     $(document).ready(function () {
+         init_canvas();
+     });
+ </script>
