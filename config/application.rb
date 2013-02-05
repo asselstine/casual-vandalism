@@ -65,6 +65,8 @@ module Stallgraffiti
     config.generators.stylesheets = false
 
     #required by Devise for Heroku deployments
-    config.assets.initialize_on_precompile = false
+    #config.assets.initialize_on_precompile = false
+
+    config.paperclip_defaults = { :storage => :file }
   end
 end

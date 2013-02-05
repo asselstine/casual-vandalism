@@ -1,26 +1,23 @@
 <h1>walls</h1>
 
-<table>
-  <tr>
-    <th></th>
-    <th>Name</th>
-    <th>Header color</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
 <% @walls.each do |wall| %>
-  <tr>
-    <td><%= image_tag wall.revisions.last.image.url(:thumb) %></td>
-    <td><%= wall.name %></td>
-    <td><%= wall.header_color %></td>
-    <td><%= link_to 'Show', wall %></td>
-    <td><%= link_to 'Edit', edit_wall_path(wall) %></td>
-    <td><%= link_to 'Destroy', wall, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<div class="">
+  <div class="left-col">
+    <%= wall.name %>
+  </div>
+  <div class="right-col">
+    <%= link_to wall do %>
+      <%= image_tag wall.revisions.last.image.url(:thumb) %>
+    <% end %>
+    <div class="crud">
+        <%= link_to 'Edit', edit_wall_path(wall) %>
+        <%= link_to 'Destroy', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+</div>
+
 <% end %>
-</table>
+
 
 <br />
 

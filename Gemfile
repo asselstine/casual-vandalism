@@ -1,7 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'devise'
+
+#For image processing
 gem 'rmagick'
+
+#Amazon S3
+gem 'aws-sdk'
+
+gem 'pg'
 
 gem 'paperclip'
 

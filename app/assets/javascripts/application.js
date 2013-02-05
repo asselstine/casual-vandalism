@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
 var i = 0;
 $(document).ready(function () {
     $(window).scroll(function() {
@@ -53,3 +54,4 @@ function updateFonts() {
 function addClientWidth(msg) {
     $("body").prepend( "<p>" + msg + "</p>");
 }
+
