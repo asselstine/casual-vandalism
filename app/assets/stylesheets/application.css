@@ -87,7 +87,7 @@ h1 {
 
 .canvas_ghost {
     position: absolute;
-    border: 3px dashed #454545;
+    border: 4px dashed #7cfc00;
     width: 200px;
     height: 200px;
 }
@@ -101,6 +101,6 @@ body {
 
 canvas {
     position: absolute;
-    border: 1px solid black;
     cursor: pointer;
+    border: 3px solid #7cfc00;
 }
