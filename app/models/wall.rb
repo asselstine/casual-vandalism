@@ -1,5 +1,3 @@
-require 'rmagick'
-
 class Wall < ActiveRecord::Base
   attr_accessible :header_color, :name, :background
   has_attached_file :background, #:processors => [:auto_orient],
