@@ -39,7 +39,7 @@ function updateFonts() {
         var newLeft = $(document).scrollLeft() + "px";
         $(".controls a").css("font-size", fontSize + "px");
         $(".controls").css("position", "absolute");
-        //addClientWidth("top: " + newTop + ", " + newLeft);
+        //bodyLog("top: " + newTop + ", " + newLeft);
         $(".controls").css("top", newTop);
         $(".controls").css("left", newLeft);
     } catch (e) {
@@ -51,7 +51,7 @@ function updateFonts() {
     */
 }
 
-function addClientWidth(msg) {
+function bodyLog(msg) {
     $("body").prepend( "<p>" + msg + "</p>");
 }
 

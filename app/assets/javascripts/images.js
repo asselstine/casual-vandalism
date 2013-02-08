@@ -1,3 +1,5 @@
+/*
+
 //Where the 'draw' canvas select starts
 var selectStartX;
 var selectStartY;
@@ -155,6 +157,22 @@ function bind_events() {
             $("body").bind("touchcancel.select", select_end);
         }
     });
+    Hammer( document.getElementById("canvas_container"))
+                .on("drag transform", function (e) {
+                switch(e.type) {
+                    case "drag":
+                        bodyLog(e.gesture.distanceX + ", " + e.gesture.distanceY);
+                        break;
+                    case "transform":
+                        bodyLog(e.gesture.scale);
+                        break;
+                }
+
+    });
+    Hammer( document.getElementById("background"))
+        .on("tap", function (e) {
+            bodyLog("hello");
+    });
 }
 
 function addCanvasClick(e, isDragging) {
@@ -211,14 +229,6 @@ function redraw() {
 function getImageBlob() {
     var dataUrl = canvas.toDataURL();
     var binary = atob(dataUrl.split(',')[1]);
-   /*
-    var array = [];
-    for (var i= 0; i < binary.length; i++) {
-        array.push(binary.charCodeAt(i));
-    }
-    */
-
-
     var ab = new ArrayBuffer(binary.length);
     var ia = new Uint8Array(ab);
     for (var i = 0; i < binary.length; i++) {
@@ -243,7 +253,7 @@ function upload() {
         dataType: "json",
         data: fd,
         success: function (data, status) {
-            $(".background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
+            $("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
         },
         complete : function () {
             switch_to_browse_mode();
@@ -267,8 +277,4 @@ function normalizeEvent(e, isDragging) {
     return e;
 }
 
-/*
-
- On phones: zoom in
-
- */
+    */

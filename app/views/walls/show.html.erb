@@ -4,6 +4,8 @@
       -webkit-user-select: none;
   }
 </style>
+
+<!--
 <h1 class="no-select"><%=@wall.name%><%= link_to " walls", walls_path, :class => "btn" %></h1>
 
 <div class="controls no-select">
@@ -26,13 +28,16 @@
 </div>
 
 <br/>
-
-<div class="canvas_container">
-  <img class="background" src='<%="#{@wall.revisions.last.image.url}"%>'/>
+   -->
+<button id="edit">Edit</button>
+<button id="nav">Navigate</button>
+<button id="zoom-plus">+</button>
+<button id="zoom-minus">-</button>
+<div id="canvas_container">
+  <img id="background" src='<%="#{@wall.revisions.last.image.url}"%>'/>
   <canvas id="canvas">
   </canvas>
 </div>
-
 <div class='canvas_ghost'></div>
 
 <%= form_tag destroy_user_session_path, :method => :delete do %>
@@ -44,6 +49,7 @@
 
  <script type="text/javascript">
      $(document).ready(function () {
+         init_container();
          init_canvas();
      });
  </script>
