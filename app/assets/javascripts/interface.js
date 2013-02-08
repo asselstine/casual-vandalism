@@ -56,6 +56,7 @@ function getContainerOffsetTop() {
 }
 
 function init_container() {
+    $("#background").css("max-width", "none !important");
     image = $("#background");
     container = $("#canvas_container");
     canvas = $("#canvas");
@@ -66,6 +67,8 @@ function init_container() {
     image.load(function () {
         canvas[0].width = this.width;
         canvas[0].height = this.height;
+        container.css("width", this.width+"px");
+        container.css("height", this.height+"px");
     });
     var wrapOffset = container.offset();
     containerWidth = container.width();

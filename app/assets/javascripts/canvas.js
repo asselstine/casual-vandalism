@@ -152,19 +152,27 @@ function addClick(x, y, isDragging) {
 
 function redraw() {
     canvas.width = canvas.width;
-    context.lineJoin = "round";
+
     for (var i = 0; i < clickX.length; i++) {
-        context.beginPath();
-        if (clickDrag[i] && i) {
-            context.moveTo(clickX[i-1], clickY[i-1]);
-        } else {
+
+        //This block handles begins
+        if (i == 0) { //if first path
+            context.beginPath();
             context.moveTo(clickX[i]-1, clickY[i]-1);
+            context.lineTo(clickX[i], clickY[i]);
+        } else if (!clickDrag[i]) { //if new path
+            context.beginPath();
+            context.moveTo(clickX[i], clickY[i]);
+        } else { //we are continuing
+            context.lineTo(clickX[i], clickY[i]);
         }
-        context.lineTo(clickX[i], clickY[i]);
-        context.closePath();
-        context.strokeStyle = currentColor[i];
-        context.lineWidth = currentSize[i];
-        context.stroke();
+
+        if (i == (clickX.length-1) || !clickDrag[i+1]) { //if this is the last segment of the path
+            context.lineJoin = "round";
+            context.strokeStyle = currentColor[i];
+            context.lineWidth = currentSize[i];
+            context.stroke();
+        }
     }
 }
 
