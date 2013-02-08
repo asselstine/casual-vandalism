@@ -86,6 +86,7 @@ function init_container() {
 
 function unbind_nav_events() {
     Hammer( container[0] ).off("drag touch release transform", handle_nav_event);
+    container.unbind(".nav");
 }
 
 function bind_nav_events() {
@@ -94,6 +95,12 @@ function bind_nav_events() {
         drag_block_horizontal: true,
         drag_block_vertical: true,
         drag_min_distance: 0}).on("drag touch release transform", handle_nav_event);
+    container.bind("touchstart.nav", function (e) {
+        e.preventDefault();
+    });
+    container.bind("touchmove.nav", function (e) {
+        e.preventDefault();
+    });
 }
 
 function handle_nav_event(e) {

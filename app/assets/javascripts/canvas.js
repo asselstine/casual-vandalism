@@ -61,12 +61,7 @@ function init_canvas() {
 
     init_colors();
 
-    canvas.bind("touchstart.draw", function (e) {
-        e.preventDefault();
-    });
-    canvas.bind("touchmove.draw", function (e) {
-        e.preventDefault();
-    });
+
     $("#edit").click(switch_to_edit_mode);
     $("#nav").click(switch_to_nav_mode);
     $("#upload").click(function () {
@@ -91,10 +86,17 @@ function init_canvas() {
 
 function unbind_draw_events() {
     Hammer(canvas[0]).off("touch drag release", canvas_event_handler);
+    canvas.unbind(".draw");
 }
 
 function bind_draw_events() {
     Hammer(canvas[0]).on( "touch drag release", canvas_event_handler);
+    canvas.bind("touchstart.draw", function (e) {
+        e.preventDefault();
+    });
+    canvas.bind("touchmove.draw", function (e) {
+        e.preventDefault();
+    });
 }
 
 function canvas_event_handler(e) {
