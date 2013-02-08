@@ -60,6 +60,9 @@ function init_container() {
     container = $("#canvas_container");
     canvas = $("#canvas");
 
+    setTransformOrigin(canvas[0]);
+    setTransformOrigin(image[0]);
+
     image.load(function () {
         canvas[0].width = this.width;
         canvas[0].height = this.height;
@@ -70,10 +73,16 @@ function init_container() {
 
     ctms.push( Matrix.I(3) );
 
-    container.bind("mousedown", function (e) {
-        //click drag
-        e.preventDefault();
-    });
+    function mouseZoom(event) {
+        if (event.shiftKey) {
+            zoomPage(event.pageX, event.pageY, 1 / scaleStep);
+        }
+        else {
+            zoomPage(event.pageX, event.pageY, scaleStep);
+        }
+    }
+
+
 
     $("#zoom-plus").bind("click", function (e) {
         zoomIn();
@@ -88,9 +97,7 @@ function init_container() {
         drag_block_horizontal: true,
         drag_block_vertical: true,
         drag_min_distance: 0}).on("drag touch release transform", function (e) {
-
             switch(e.type) {
-
                 case "touch":
                     touchX = e.gesture.center.pageX;
                     touchY = e.gesture.center.pageY;
@@ -100,7 +107,7 @@ function init_container() {
                     break;
                 case "drag":
                     e.preventDefault();
-
+                    e.stopPropagation();
                     //translate
                     var dx = updateDx(e);
                     var dy = updateDy(e);
@@ -120,6 +127,7 @@ function init_container() {
                         zoomPage(touchX, touchY, lastGestureScale);
                         updateTransform();
                     }
+
                     break;
                 default:
                     break;
@@ -130,17 +138,29 @@ function init_container() {
 }
 
 function updateTransform() {
-    setTransform(image[0], getTransform());
-    setTransform(canvas[0], getTransform());
+    var mat = peekContext();
+    //console.debug("updateTransform: " + formatTransform(mat));
+    setTransform(image[0], mat);
+    setTransform(canvas[0], mat);
 }
 
-function setTransform(elem, transform) {
-    $(elem).css("-webkit-transform-origin", "0% 0%");
-    elem.style.transform = transform;
-    elem.style.oTransform = transform;
-    elem.style.msTransform = transform;
-    elem.style.mozTransform = transform;
-    elem.style.webkitTransform = transform;
+function setTransformOrigin(elem) {
+    var origin = "0px 0px";
+    elem.style['transformOrigin'] = origin;
+    elem.style['WebkitTransformOrigin'] = origin;
+    elem.style['msTransformOrigin'] = origin;
+    elem.style['MozTransformOrigin'] = origin;
+    elem.style['OTransformOrigin'] = origin;
+}
+
+function setTransform(elem, ctm) {
+    var px = formatTransform(ctm);
+    var noPx = formatTransformNoPx(ctm);
+    elem.style['transform'] = px;
+    elem.style['WebkitTransform'] = noPx;
+    elem.style['msTransform'] = px;
+    elem.style['MozTransform'] = px;
+    elem.style['OTransform'] = px;
 }
 
 function translate(dx, dy) {
@@ -180,12 +200,18 @@ function peekContext() {
     return elem;
 }
 
-function getTransform() {
-    var ctm = peekContext();
+function formatTransformNoPx(ctm) {
     var dx = ctm.row(1).elements[2];
     var dy = ctm.row(2).elements[2];
     var scale = ctm.row(1).elements[0];
     return "matrix("+  scale + ", 0, 0, " + scale + ", " + dx + ", " + dy + ")";
+}
+
+function formatTransform(ctm) {
+    var dx = ctm.row(1).elements[2];
+    var dy = ctm.row(2).elements[2];
+    var scale = ctm.row(1).elements[0];
+    return "matrix("+  scale + ", 0, 0, " + scale + ", " + dx + "px, " + dy + "px)";
 }
 
 function pageToCanvasCoords(pageX, pageY) {
