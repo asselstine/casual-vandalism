@@ -26,6 +26,9 @@ $(document).ready(function () {
            doUpdateFonts();
        }
     });
+    $(".nav-collapse").click(function() {
+       $(this).collapse('hide');
+    });
 });
 
 function doUpdateFonts() {

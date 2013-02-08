@@ -1,24 +1,44 @@
-<h1>walls</h1>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
 
-<% @walls.each do |wall| %>
-<div class="">
-  <div class="left-col">
-    <%= wall.name %>
-  </div>
-  <div class="right-col">
-    <%= link_to wall do %>
-      <%= image_tag wall.revisions.last.image.url(:thumb) %>
-    <% end %>
-    <div class="crud">
-        <%= link_to 'Edit', edit_wall_path(wall) %>
-        <%= link_to 'Destroy', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <!-- Be sure to leave the brand out there if you want it shown -->
+      <a class="brand" href="/walls">Walls</a>
+
+      <a class="btn" href="<%=new_wall_path%>"><i class="icon-plus-sign"></i> New</a>
+
+
+
+      <!-- Everything you want hidden at 940px or less, place within here -->
+      <div class="nav-collapse collapse pull-right">
+        <!-- .nav, .navbar-search, .navbar-form, etc -->
+        <ul class="nav">
+          <li><a href="#"><i class="icon-eject"></i> Sign Out</a></li>
+        </ul>
+
+      </div>
     </div>
   </div>
 </div>
 
-<% end %>
+
+<br/>
 
 
-<br />
-
-<%= link_to 'New Wall', new_wall_path, :class=>"btn" %>
+<div class="row">
+  <% @walls.each do |wall| %>
+      <div class="span2">
+        <%= link_to wall.name, wall %>
+        <%= link_to wall do %>
+            <%= image_tag wall.revisions.last.image.url(:thumb) %>
+        <% end %>
+        <%= link_to 'Edit', edit_wall_path(wall) %>
+        <%= link_to 'Destroy', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+  <% end %>
+</div>

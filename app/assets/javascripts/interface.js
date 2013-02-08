@@ -73,17 +73,6 @@ function init_container() {
 
     ctms.push( Matrix.I(3) );
 
-    function mouseZoom(event) {
-        if (event.shiftKey) {
-            zoomPage(event.pageX, event.pageY, 1 / scaleStep);
-        }
-        else {
-            zoomPage(event.pageX, event.pageY, scaleStep);
-        }
-    }
-
-
-
     $("#zoom-plus").bind("click", function (e) {
         zoomIn();
     });
@@ -92,49 +81,61 @@ function init_container() {
         zoomOut();
     });
 
+
+}
+
+function unbind_nav_events() {
+    Hammer( container[0] ).off("drag touch release transform", handle_nav_event);
+}
+
+function bind_nav_events() {
     Hammer( container[0], {
         transform_always_block: true,
         drag_block_horizontal: true,
         drag_block_vertical: true,
-        drag_min_distance: 0}).on("drag touch release transform", function (e) {
-            switch(e.type) {
-                case "touch":
-                    touchX = e.gesture.center.pageX;
-                    touchY = e.gesture.center.pageY;
-                    lastGestureScale = 1;
-                    e.preventDefault();
+        drag_min_distance: 0}).on("drag touch release transform", handle_nav_event);
+}
 
-                    break;
-                case "drag":
-                    e.preventDefault();
-                    e.stopPropagation();
-                    //translate
-                    var dx = updateDx(e);
-                    var dy = updateDy(e);
-                    translate(dx, dy);
-                    updateTransform();
-                    break;
-                case "transform":
-                    pushContext();
-                    zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
-                    lastGestureScale = e.gesture.scale;
-                    touchX = e.gesture.center.pageX;
-                    touchY = e.gesture.center.pageY;
-                    popContext();
-                    break;
-                case "release":
-                    if (lastGestureScale != 1) {
-                        zoomPage(touchX, touchY, lastGestureScale);
-                        updateTransform();
-                    }
-
-                    break;
-                default:
-                    break;
+function handle_nav_event(e) {
+    switch(e.type) {
+        case "touch":
+            touchX = e.gesture.center.pageX;
+            touchY = e.gesture.center.pageY;
+            lastGestureScale = 1;
+            e.preventDefault();
+            e.stopPropagation();
+            break;
+        case "drag":
+            e.preventDefault();
+            e.stopPropagation();
+            //translate
+            var dx = updateDx(e);
+            var dy = updateDy(e);
+            translate(dx, dy);
+            updateTransform();
+            break;
+        case "transform":
+            e.preventDefault();
+            e.stopPropagation();
+            pushContext();
+            zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
+            lastGestureScale = e.gesture.scale;
+            touchX = e.gesture.center.pageX;
+            touchY = e.gesture.center.pageY;
+            popContext();
+            break;
+        case "release":
+            if (lastGestureScale != 1) {
+                zoomPage(touchX, touchY, lastGestureScale);
+                updateTransform();
             }
 
-            return true;
-        });
+            break;
+        default:
+            break;
+    }
+
+    return true;
 }
 
 function updateTransform() {

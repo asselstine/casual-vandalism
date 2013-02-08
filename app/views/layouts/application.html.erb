@@ -6,16 +6,41 @@
 
   <%= javascript_include_tag "application" %>
 
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <style type="text/css">
+      body {
+
+          /*
+          padding-top: 60px;
+          padding-bottom: 40px;
+          */
+      }
+      body {
+          padding-top: 60px;
+      }
+      @media (max-width: 979px) {
+          .navbar-fixed-top {
+              position: fixed !important;
+              margin-right: 0px !important;
+              margin-left: 0px !important;
+          }
+          body {
+              padding-top: 60px !important;
+          }
+      }
+  </style>
+  <link href="/css/bootstrap-responsive.css" rel="stylesheet">
   <script type="text/javascript" src="/js/hammer-latest.min.js"></script>
   <script type="text/javascript" src="/js/sylvester.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width">
 </head>
 <body>
 
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+<p class="alert alert-info" style="display:none;"><%= notice %></p>
+<p class="alert alert-error" style="display:none;"><%= alert %></p>
 
 <%= yield %>
 

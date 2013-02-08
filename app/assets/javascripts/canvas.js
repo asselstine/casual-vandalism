@@ -1,8 +1,22 @@
 var context;
 var paint;
 
+
+var SMALL_SIZE = 2;
+var MEDIUM_SIZE = 8;
+var LARGE_SIZE = 24;
+
+var colors = [
+    "#ff1517",
+    "#150fff",
+    "#fafffb",
+    "#000000",
+    "#01e411",
+    "#a37d04"
+];
+
 var color = "#df4b26";
-var size = 4;
+var size = SMALL_SIZE;
 
 var clickX = new Array();
 var clickY = new Array();
@@ -10,38 +24,90 @@ var clickDrag = new Array();
 var currentColor = new Array();
 var currentSize = new Array();
 
+function switch_to_edit_mode() {
+    bind_draw_events();
+    unbind_nav_events();
+    $(".btn-select-size").addClass("active");
+    $("#nav").removeClass("active");
+}
+
+function switch_to_nav_mode() {
+    unbind_draw_events();
+    bind_nav_events();
+    $(".btn-select-size").removeClass("active");
+    $(".btn-colorwheel").removeClass("active");
+    $("#nav").addClass("active");
+}
+
+function setActivePencilMode(elem) {
+    switch_to_edit_mode();
+    $(".select-size li.active").removeClass("active");
+    $(elem).parent().addClass("active");
+    $(".btn-select-size").addClass("active");
+}
+
+function init_colors() {
+    $("#color1").addClass("active");
+    color = $("#color1").css("background-color");
+    $(".select-color a").click(function () {
+        color = $(this).css("background-color");
+        switch_to_edit_mode();
+    });
+}
+
 function init_canvas() {
     context = canvas[0].getContext("2d");
     paint = false;
-    $("#edit").click(function (e) {
-        bind_draw_events();
+
+    init_colors();
+
+    canvas.bind("touchstart.draw", function (e) {
+        e.preventDefault();
     });
-    $("#nav").click(function (e) {
-        unbind_draw_events();
+    canvas.bind("touchmove.draw", function (e) {
+        e.preventDefault();
+    });
+    $("#edit").click(switch_to_edit_mode);
+    $("#nav").click(switch_to_nav_mode);
+    $("#upload").click(function () {
+        upload();
+    });
+    $("#small").click(function () {
+        size = SMALL_SIZE;
+        setActivePencilMode(this);
+    });
+    $("#medium").click(function () {
+        size = MEDIUM_SIZE;
+        setActivePencilMode(this);
+    });
+    $("#large").click(function () {
+        size = LARGE_SIZE;
+        setActivePencilMode(this);
+    });
+    $("#color1").click(function () {
+        color = $(this).css("background-color");
     });
 }
 
 function unbind_draw_events() {
     Hammer(canvas[0]).off("touch drag release", canvas_event_handler);
-
 }
 
 function bind_draw_events() {
     Hammer(canvas[0]).on( "touch drag release", canvas_event_handler);
-    canvas.bind("touchstart", function (e) {
-        e.preventDefault();
-    });
 }
 
 function canvas_event_handler(e) {
     switch (e.type) {
         case "touch":
             start(e);
+            e.preventDefault();
             e.stopPropagation();
             break;
         case "drag":
             move(e);
             e.stopPropagation();
+            e.preventDefault();
             break;
         case "release":
             stop(e);
@@ -101,7 +167,7 @@ function redraw() {
 }
 
 function getImageBlob() {
-    var dataUrl = canvas.toDataURL();
+    var dataUrl = canvas[0].toDataURL();
     var binary = atob(dataUrl.split(',')[1]);
     var ab = new ArrayBuffer(binary.length);
     var ia = new Uint8Array(ab);
@@ -116,8 +182,9 @@ function upload() {
     fd.append("image[x]", 0);
     fd.append("image[y]", 0);
     fd.append("image[canvas]", getImageBlob());
+    $(".upload-alert").alert();
     $.ajax({
-        url: document.URL + "/images.json",
+        url: $("#wall_images_path").html() + ".json",
         type: "POST",
         dataType: "json",
         data: fd,
@@ -125,7 +192,7 @@ function upload() {
             $("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
         },
         complete : function () {
-            switch_to_browse_mode();
+            $(".upload-alert").alert('close');
         },
         processData: false,  // tell jQuery not to process the data
         contentType: false   // tell jQuery not to set contentType
