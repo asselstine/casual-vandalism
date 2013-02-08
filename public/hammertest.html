@@ -1,0 +1,270 @@
+<html>
+
+    <head>
+        <style type="text/css">
+            body {
+                width: 80%;
+                margin: 0 auto;
+            }
+            #wrap {
+                 background: #f5f8ff;
+                width: 600px;
+                height: 600px;
+                overflow: hidden;
+                position: relative;
+            }
+            #square, canvas {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                /*
+                width: 100px;
+                height: 100px;
+                */
+            }
+        </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/hammer-latest.min.js"></script>
+        <script type="text/javascript" src="/js/sylvester.js"></script>
+        <script type="text/javascript">
+            function log(str) {
+                document.getElementById("transform").innerHTML = str;
+            }
+
+            var ctm;
+            var lastScale = 1;
+            var touchX, touchY;
+
+            function updateDy(e) {
+                var dy = e.gesture.center.pageY - touchY;
+                touchY = e.gesture.center.pageY;
+                return dy;
+            }
+
+            function updateDx(e) {
+                var dx = e.gesture.center.pageX - touchX;
+                touchX = e.gesture.center.pageX;
+                return dx;
+            }
+
+            var canvasWidth, canvasHeight;
+            var scaleStep = 1.5;
+            var lastGestureScale = 1;
+
+            function zoomIn() {
+                zoom(canvasWidth / 2, canvasHeight / 2, scaleStep);
+            }
+
+            function zoomOut() {
+                zoom(canvasWidth / 2, canvasHeight / 2, 1 / scaleStep);
+            }
+
+            function zoomPage(pageX, pageY, scaleVal) {
+                var centerX = pageX - getCanvasOffsetLeft();
+                var centerY = pageY - getCanvasOffsetTop();
+                zoom(centerX, centerY, scaleVal);
+            }
+
+            function zoom(centerX, centerY, scaleVal) {
+
+                //Get position from origin
+                //var x = (e.pageX - getCanvasOffsetLeft());
+               // var y = (e.pageY - getCanvasOffsetTop());
+
+                //need to translate to this position for the scale, then translate back
+                //var scaleVal = 1.1;//mouseZoom * mouseZoomStep;
+
+                loggy("zoom[ centerX, centerY: " + centerX + ", " + centerY + " scaling: " + scaleVal + " ]");
+
+                translate(-centerX,-centerY);
+                scale(scaleVal);
+                translate(centerX,centerY);
+
+                updateTransform();
+            }
+
+            function getCanvasOffset() {
+                return $("#wrap").offset();
+            }
+
+            function getCanvasOffsetLeft() {
+                return $("#wrap").offset().left;
+            }
+
+            function getCanvasOffsetTop() {
+                return $("#wrap").offset().top;
+            }
+
+            function init() {
+                $("#square").load(function () {
+                    $("#canvas")[0].width = $("#square")[0].width;
+                    $("#canvas")[0].height = $("#square")[0].height;
+                });
+                var wrapOffset = $("#wrap").offset();
+                canvasWidth = $("#wrap").width();
+                canvasHeight = $("#wrap").height();
+
+                ctms.push( Matrix.I(3) );
+
+                $("#wrap").bind("mousedown", function (e) {
+                   //click drag
+                    e.preventDefault();
+                });
+
+                $("#zoom-plus").bind("click", function (e) {
+                    zoomIn();
+                });
+
+                $("#zoom-minus").bind("click", function (e) {
+                    zoomOut();
+                });
+
+                $("#wrap").bind("click", function (e) {
+                   //need original coords
+                   var x = e.pageX - getCanvasOffsetLeft();
+                   var y = e.pageY - getCanvasOffsetTop();
+
+
+                   var vec = peekContext().inv().multiply( Vector.create([x,y,1]) );
+
+                   loggy("context; " + peekContext().inspect() + " original: ("+ x + ", " + y +
+                        " vec: " + vec.inspect());// + "): translated: " + vec.inspect());
+                });
+
+
+                 Hammer( $("#wrap")[0], {
+                         transform_always_block: true,
+                        drag_block_horizontal: true,
+                        drag_block_vertical: true,
+                        drag_min_distance: 0}).on("drag touch release transform", function (e) {
+
+                     switch(e.type) {
+
+                         case "touch":
+                             touchX = e.gesture.center.pageX;
+                             touchY = e.gesture.center.pageY;
+                             lastGestureScale = 1;
+                             break;
+                         case "drag":
+
+                                 //translate
+                             var dx = updateDx(e);
+                             var dy = updateDy(e);
+                             translate(dx, dy);
+                             updateTransform();
+                             break;
+                         case "transform":
+                             //need to get center x
+                             pushContext();
+                             zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
+                             loggy("zoom: " +  e.gesture.center.pageX);
+                             updateTransform();
+                             lastGestureScale = e.gesture.scale;
+                             touchX = e.gesture.center.pageX;
+                             touchY = e.gesture.center.pageY;
+                             popContext();
+                             break;
+                         case "release":
+                             if (lastGestureScale != 1) {
+                                zoomPage(touchX, touchY, lastGestureScale);
+                                updateTransform();
+                             }
+                             break;
+                         default:
+                             log("event: " + e.type);
+                             break;
+                     }
+
+                     return true;
+                 });
+            }
+
+            function updateTransform() {
+                setTransform($("#square")[0], getTransform());
+                setTransform($("#canvas")[0], getTransform());
+            }
+
+            function setTransform(elem, transform) {
+                $(elem).css("-webkit-transform-origin", "0% 0%");
+                elem.style.transform = transform;
+                elem.style.oTransform = transform;
+                elem.style.msTransform = transform;
+                elem.style.mozTransform = transform;
+                elem.style.webkitTransform = transform;
+            }
+
+            function translate(dx, dy) {
+                var tm = Matrix.create([
+                    [1, 0, dx],
+                    [0, 1, dy],
+                    [0, 0, 1 ]
+                ]);
+              //  console.debug("translate: " + tm.inspect());
+                pushContext( tm.multiply(popContext()));
+            }
+
+            function scale(s) {
+             //   console.debug("scaling with " + s);
+                var sm = Matrix.create([
+                    [s, 0, 0],
+                    [0, s, 0],
+                    [0, 0, 1]
+                ]);
+                pushContext( sm.multiply(popContext()));
+            }
+
+            function pushContext(context) {
+                if (!context) {
+                    context = peekContext().dup();
+                }
+                ctms.push(context);
+            }
+
+            function popContext() {
+                return ctms.pop();
+            }
+
+            function peekContext() {
+                var elem = ctms.pop();
+                ctms.push( elem );
+                return elem;
+            }
+
+            ctms = [];
+
+            function show() {
+                log(getTransform());
+            }
+
+            function getTransform() {
+                var ctm = peekContext();
+                var dx = ctm.row(1).elements[2];
+                var dy = ctm.row(2).elements[2];
+                var scale = ctm.row(1).elements[0];
+                return "matrix("+  scale + ", 0, 0, " + scale + ", " + dx + ", " + dy + ")";
+            }
+
+            function loggy(str) {
+                $("#log").html(str);
+            }
+
+            $(document).ready(init);
+        </script>
+        <meta name="viewport" content="width=device-width">
+    </head>
+
+
+    <body>
+    <div id="log"></div>
+        <button id="zoom-plus">+</button>
+        <button id="zoom-minus">-</button>
+
+        <br/>
+        <div id="wrap">
+            <img id="square" src="/assets/vla-alien.jpeg"/>
+            <canvas id="canvas"></canvas>
+        </div>
+    </body>
+
+
+</html>
