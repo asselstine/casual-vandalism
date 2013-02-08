@@ -3,43 +3,15 @@
       -moz-user-select: none;
       -webkit-user-select: none;
   }
-        .icon-colorwheel {
-            background-image: url("/assets/color-wheel-icon.png");
-            background-position: center;
-            width: 16px;
-            height: 16px;
-            margin-top: -1px;
-        }
 
-        #color1 {
-            height:16px;
-            background-color: #ff1517;
-        }
+  .icon-colorwheel {
+      background-image: url("/assets/color-wheel-icon.png");
+      background-position: center;
+      width: 16px;
+      height: 16px;
+      margin-top: -1px;
+  }
 
-      #color2 {
-          height:16px;
-          background-color: #150fff;
-      }
-
-      #color3 {
-          height:16px;
-          background-color: #fafffb;
-      }
-
-      #color4 {
-          height:16px;
-          background-color: #000000;
-      }
-
-      #color5 {
-          height:16px;
-          background-color: #01e411;
-      }
-
-      #color6 {
-          height:16px;
-          background-color: #a37d04;
-      }
 </style>
 <div id="wall_images_path" style="display: none"><%=wall_images_path(@wall)%></div>
 
@@ -108,8 +80,11 @@
         </ul>
       </div>
 
-      <a class="btn" id="nav" href="#"><i class="icon-search"></i></a>
-
+      <a class="btn" id="nav" href="#"><i class="icon-move"></i></a>
+      <a class="btn" id="undo" href="#"><i class="icon-minus-sign"></i></a>
+      <!--
+      <a class="btn" id="zoom" href="#"><i class="icon-search"></i></a>
+           -->
       <!-- Everything you want hidden at 940px or less, place within here -->
       <div class="nav-collapse collapse pull-right">
         <!-- .nav, .navbar-search, .navbar-form, etc -->
@@ -124,35 +99,12 @@
   </div>
 </div>
 
-<!--
-<h1 class="no-select"><%=@wall.name%><%= link_to " walls", walls_path, :class => "btn" %></h1>
-
-<div class="controls no-select">
-
-  <section class="browse_mode">
-    <a id="select_draw">Draw!</a>
-  </section>
-  <section class="select_mode">
-    <p>Select a drawing area by click dragging on the page.</p>
-    <br/>
-    <a class="cancel_select">Cancel</a>
-  </section>
-  <section class="edit_mode">
-    <a id="upload" value="upload">Upload</a>
-    <br/>
-    <a id="clear">Clear</a>
-    <br/>
-    <a id="cancel">Cancel</a>
-  </section>
-</div>
-
-<br/>
-   -->
-
 <div id="canvas_container">
-  <img id="background" src='<%="#{@wall.revisions.last.image.url}"%>'/>
+
+  <img style="max-width: none;" id="background" src='<%="#{@wall.revisions.last.image.url}"%>'/>
   <canvas id="canvas">
   </canvas>
+
 </div>
 
 <%= form_tag destroy_user_session_path, :method => :delete do %>
@@ -168,9 +120,5 @@
          init_container();
          init_canvas();
      });
-
-     $(".nav-collapse").click( function () {
-
-     })
 
  </script>

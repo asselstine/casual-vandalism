@@ -61,9 +61,16 @@ function init_canvas() {
 
     init_colors();
 
-
+    $("#undo").click(undo);
     $("#edit").click(switch_to_edit_mode);
-    $("#nav").click(switch_to_nav_mode);
+    $("#nav").click(function (e) {
+        if ($(this).hasClass("active")) {
+            unbind_nav_events();
+            $(this).removeClass("active");
+        } else {
+            switch_to_nav_mode();
+        }
+    });
     $("#upload").click(function () {
         upload();
     });
@@ -150,8 +157,26 @@ function addClick(x, y, isDragging) {
     currentSize.push(size);
 }
 
+function undo() {
+    if (clickX.length == 0) {
+        return;
+    }
+    for (var i = clickX.length - 1; i >= 0; i--) {
+        clickX.pop();
+        clickY.pop();
+        var drag = clickDrag.pop();
+        currentColor.pop();
+        currentSize.pop();
+        if (!drag) {
+             //then this is the last and we should return
+            break;
+        }
+    }
+    redraw();
+}
+
 function redraw() {
-    canvas.width = canvas.width;
+    context.clearRect ( 0, 0, imageWidth, imageHeight );
 
     for (var i = 0; i < clickX.length; i++) {
 

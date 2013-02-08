@@ -3,6 +3,7 @@
 var ctms = [];
 var touchX, touchY;
 
+var imageWidth, imageHeight;
 var containerWidth, containerHeight;
 var scaleStep = 1.5;
 var lastGestureScale = 1;
@@ -65,9 +66,11 @@ function init_container() {
     setTransformOrigin(image[0]);
 
     image.load(function () {
+        imageWidth = this.width;
+        imageHeight = this.height;
         canvas[0].width = this.width;
         canvas[0].height = this.height;
-        container.css("width", this.width+"px");
+        container.css("width", "100%");
         container.css("height", this.height+"px");
     });
     var wrapOffset = container.offset();
