@@ -19,7 +19,7 @@ class Wall < ActiveRecord::Base
 
     #copy that image out to a file
     file = Tempfile.new(['comp', '.jpg'])
-    comp[0].write("jpeg:"+file.path){ self.quality = 50 }
+    comp[0].write("jpeg:"+file.path){ self.quality = 75 }
 
     #create revision
     rev = Revision.new
