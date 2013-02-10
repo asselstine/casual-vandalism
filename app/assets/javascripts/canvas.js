@@ -67,6 +67,7 @@ function init_canvas() {
         if ($(this).hasClass("active")) {
             unbind_nav_events();
             $(this).removeClass("active");
+            $(this).blur();
         } else {
             switch_to_nav_mode();
         }

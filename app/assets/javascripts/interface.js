@@ -65,7 +65,8 @@ function init_container() {
     setTransformOrigin(canvas[0]);
     setTransformOrigin(image[0]);
 
-    image.load(function () {
+    image.bind("load", function () {
+        clearTransform();
         imageWidth = this.width;
         imageHeight = this.height;
         canvas[0].width = this.width;
@@ -119,12 +120,8 @@ function handle_nav_event(e) {
             touchX = e.gesture.center.pageX;
             touchY = e.gesture.center.pageY;
             lastGestureScale = 1;
-            e.preventDefault();
-            e.stopPropagation();
             break;
         case "drag":
-            e.preventDefault();
-            e.stopPropagation();
             //translate
             var dx = updateDx(e);
             var dy = updateDy(e);
@@ -132,8 +129,6 @@ function handle_nav_event(e) {
             updateTransform();
             break;
         case "transform":
-            e.preventDefault();
-            e.stopPropagation();
             pushContext();
             zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
             lastGestureScale = e.gesture.scale;
@@ -153,6 +148,12 @@ function handle_nav_event(e) {
     }
 
     return true;
+}
+
+function clearTransform() {
+    ctms = new Array();
+    ctms.push( Matrix.I(3) );
+    updateTransform();
 }
 
 function updateTransform() {
