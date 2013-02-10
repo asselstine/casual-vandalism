@@ -1,6 +1,9 @@
 var context;
 var paint;
 
+Array.prototype.peek = function() {
+    return this[this.length-1];
+};
 
 var SMALL_SIZE = 2;
 var MEDIUM_SIZE = 8;
@@ -62,6 +65,7 @@ function init_canvas() {
     init_colors();
 
     $("#undo").click(undo);
+    $("#redo").click(redo);
     $("#edit").click(switch_to_edit_mode);
     $("#nav").click(function (e) {
         if ($(this).hasClass("active")) {
@@ -158,19 +162,57 @@ function addClick(x, y, isDragging) {
     currentSize.push(size);
 }
 
+/*
+Array of objects like so:
+
+{
+    clickX: <int>,
+    clickY: <int>,
+    clickDrag: <bool>,
+    currentColor: <string>,
+    currentSize: <int>
+}
+
+ */
+var redoHistory = new Array();
+
+
+
 function undo() {
     if (clickX.length == 0) {
         return;
     }
     for (var i = clickX.length - 1; i >= 0; i--) {
-        clickX.pop();
-        clickY.pop();
-        var drag = clickDrag.pop();
-        currentColor.pop();
-        currentSize.pop();
-        if (!drag) {
+        var recall = {
+            clickX: clickX.pop(),
+            clickY: clickY.pop(),
+            clickDrag: clickDrag.pop(),
+            currentColor: currentColor.pop(),
+            currentSize: currentSize.pop()
+        };
+        redoHistory.push(recall);
+        if (!recall.clickDrag) {
              //then this is the last and we should return
             break;
+        }
+    }
+    redraw();
+}
+
+function redoRecall(recall) {
+    clickX.push(recall.clickX);
+    clickY.push(recall.clickY);
+    clickDrag.push(recall.clickDrag);
+    currentColor.push(recall.currentColor);
+    currentSize.push(recall.currentSize);
+}
+
+function redo() {
+    var recall = null;
+    if (redoHistory.length > 0) {
+        redoRecall(redoHistory.pop()); //last will be clickDrag
+        while (redoHistory.length > 0 && redoHistory.peek().clickDrag) {
+            redoRecall(redoHistory.pop());
         }
     }
     redraw();
