@@ -70,6 +70,10 @@ function init_container() {
         imageHeight = this.height;
         canvas[0].width = this.width;
         canvas[0].height = this.height;
+        if ($(document).width() < imageWidth) {
+            scale( $(document).width() / imageWidth );
+            updateTransform();
+        }
         container.css("width", "100%");
         container.css("height", this.height+"px");
     });
