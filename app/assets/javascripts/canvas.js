@@ -21,11 +21,18 @@ var colors = [
 var color = "#df4b26";
 var size = SMALL_SIZE;
 
-var clickX = new Array();
-var clickY = new Array();
-var clickDrag = new Array();
-var currentColor = new Array();
-var currentSize = new Array();
+var clickHistory = new Array();
+
+function pushHistory(x, y, isDragging) {
+    var recall = {
+        clickX: x,
+        clickY: y,
+        clickDrag: isDragging,
+        currentColor: color,
+        currentSize: size
+    };
+    clickHistory.push(recall);
+}
 
 function switch_to_edit_mode() {
     bind_draw_events();
@@ -156,11 +163,7 @@ function stop(e) {
 }
 
 function addClick(x, y, isDragging) {
-    clickX.push(x);
-    clickY.push(y);
-    clickDrag.push(isDragging);
-    currentColor.push(color);
-    currentSize.push(size);
+    pushHistory(x,y,isDragging,color,size);
 }
 
 /*
@@ -177,43 +180,25 @@ Array of objects like so:
  */
 var redoHistory = new Array();
 
-
-
 function undo() {
-    if (clickX.length == 0) {
+    if (clickHistory.length == 0) {
         return;
     }
-    for (var i = clickX.length - 1; i >= 0; i--) {
-        var recall = {
-            clickX: clickX.pop(),
-            clickY: clickY.pop(),
-            clickDrag: clickDrag.pop(),
-            currentColor: currentColor.pop(),
-            currentSize: currentSize.pop()
-        };
-        redoHistory.push(recall);
-        if (!recall.clickDrag) {
-             //then this is the last and we should return
+    for (var i = clickHistory.length - 1; i >= 0; i--) {
+        redoHistory.push(clickHistory.pop());
+        if (!redoHistory.peek().clickDrag) {
+             //then we're not dragging and this is the first.
             break;
         }
     }
     redraw();
 }
 
-function redoRecall(recall) {
-    clickX.push(recall.clickX);
-    clickY.push(recall.clickY);
-    clickDrag.push(recall.clickDrag);
-    currentColor.push(recall.currentColor);
-    currentSize.push(recall.currentSize);
-}
-
 function redo() {
-    var recall = null;
     if (redoHistory.length > 0) {
-        redoRecall(redoHistory.pop()); //last will be clickDrag
+        clickHistory.push(redoHistory.pop()); //last will be clickDrag
         while (redoHistory.length > 0 && redoHistory.peek().clickDrag) {
-            redoRecall(redoHistory.pop());
+            clickHistory.push(redoHistory.pop());
         }
     }
     redraw();
@@ -222,24 +207,24 @@ function redo() {
 function redraw() {
     context.clearRect ( 0, 0, imageWidth, imageHeight );
 
-    for (var i = 0; i < clickX.length; i++) {
-
+    for (var i = 0; i < clickHistory.length; i++) {
+        var recall = clickHistory[i];
         //This block handles begins
         if (i == 0) { //if first path
             context.beginPath();
-            context.moveTo(clickX[i]-1, clickY[i]-1);
-            context.lineTo(clickX[i], clickY[i]);
-        } else if (!clickDrag[i]) { //if new path
+            context.moveTo(recall.clickX-1, recall.clickY-1);
+            context.lineTo(recall.clickX, recall.clickY);
+        } else if (!recall.clickDrag) { //if new path
             context.beginPath();
-            context.moveTo(clickX[i], clickY[i]);
+            context.moveTo(recall.clickX, recall.clickY);
         } else { //we are continuing
-            context.lineTo(clickX[i], clickY[i]);
+            context.lineTo(recall.clickX, recall.clickY);
         }
 
-        if (i == (clickX.length-1) || !clickDrag[i+1]) { //if this is the last segment of the path
+        if (i == (clickHistory.length-1) || !clickHistory[i+1].clickDrag) { //if this is the last segment of the path
             context.lineJoin = "round";
-            context.strokeStyle = currentColor[i];
-            context.lineWidth = currentSize[i];
+            context.strokeStyle = recall.currentColor;
+            context.lineWidth = recall.currentSize;
             context.stroke();
         }
     }
