@@ -115,6 +115,7 @@ function canvas_event_handler(e) {
     switch (e.type) {
         case "touch":
             start(e);
+            redoHistory = new Array();
             e.preventDefault();
             e.stopPropagation();
             break;
@@ -268,6 +269,7 @@ function upload() {
         data: fd,
         success: function (data, status) {
             $("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
+
         },
         complete : function () {
             $(".upload-alert").alert('close');
