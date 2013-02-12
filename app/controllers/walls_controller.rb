@@ -3,6 +3,7 @@ class WallsController < ApplicationController
   # GET /walls.json
   def index
     @walls = Wall.all
+    @current_user = current_user
     for wall in @walls
       wall.get_last_revision
     end

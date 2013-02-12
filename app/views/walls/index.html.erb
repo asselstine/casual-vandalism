@@ -13,14 +13,18 @@
       <a class="btn" href="<%=new_wall_path%>"><i class="icon-plus-sign"></i> New</a>
 
 
+      <%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2), :class=>"btn" %>
+
 
       <!-- Everything you want hidden at 940px or less, place within here -->
       <div class="nav-collapse collapse pull-right">
         <!-- .nav, .navbar-search, .navbar-form, etc -->
         <ul class="nav">
-          <li><a href="#"><i class="icon-eject"></i> Sign Out</a></li>
+          <% if @current_user %>
+            <li><a href="#"><%=@current_user.email%></a></li>
+            <li><%= button_to "Sign Out", destroy_user_session_path, :method=>:delete, :class=>:btn %></li>
+          <% end %>
         </ul>
-
       </div>
     </div>
   </div>

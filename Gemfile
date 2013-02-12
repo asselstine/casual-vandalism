@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
 
 #For image processing
 gem 'rmagick', '>=2.11', :require => 'RMagick'
