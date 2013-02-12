@@ -5,7 +5,7 @@ var touchX, touchY;
 
 var imageWidth, imageHeight;
 var containerWidth, containerHeight;
-var scaleStep = 1.5;
+var scaleStep = 1.9;
 var lastGestureScale = 1;
 var container;
 var image;
@@ -23,12 +23,8 @@ function updateDx(e) {
     return dx;
 }
 
-function zoomIn() {
-    zoom(containerWidth / 2, containerHeight / 2, scaleStep);
-}
-
-function zoomOut() {
-    zoom(containerWidth / 2, containerHeight / 2, 1 / scaleStep);
+function zoomIn(e) {
+    zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, scaleStep);
 }
 
 function zoomPage(pageX, pageY, scaleVal) {
@@ -71,10 +67,7 @@ function init_container() {
         imageHeight = this.height;
         canvas[0].width = this.width;
         canvas[0].height = this.height;
-        if ($(document).width() < imageWidth) {
-            scale( $(document).width() / imageWidth );
-            updateTransform();
-        }
+        resizeImageToWindow();
         container.css("width", "100%");
         container.css("height", this.height+"px");
     });
@@ -83,16 +76,14 @@ function init_container() {
     containerHeight = container.height();
 
     ctms.push( Matrix.I(3) );
+}
 
-    $("#zoom-plus").bind("click", function (e) {
-        zoomIn();
-    });
-
-    $("#zoom-minus").bind("click", function (e) {
-        zoomOut();
-    });
-
-
+function resizeImageToWindow() {
+    clearTransform();
+    if ($(document).width() < imageWidth) {
+        scale( $(document).width() / imageWidth );
+        updateTransform();
+    }
 }
 
 function unbind_nav_events() {

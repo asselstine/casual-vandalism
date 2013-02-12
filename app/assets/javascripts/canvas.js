@@ -35,18 +35,47 @@ function pushHistory(x, y, isDragging) {
 }
 
 function switch_to_edit_mode() {
+    disable_nav_mode();
+    disable_zoom_mode();
+    disable_color_wheel();
     bind_draw_events();
-    unbind_nav_events();
     $(".btn-select-size").addClass("active");
+}
+
+function disable_edit_mode() {
+    $(".btn-select-size").removeClass("active");
+    unbind_draw_events();
+}
+
+function disable_nav_mode() {
+    unbind_nav_events();
     $("#nav").removeClass("active");
 }
 
-function switch_to_nav_mode() {
-    unbind_draw_events();
-    bind_nav_events();
-    $(".btn-select-size").removeClass("active");
+function disable_color_wheel() {
     $(".btn-colorwheel").removeClass("active");
+}
+
+function switch_to_nav_mode() {
+    disable_edit_mode();
+    disable_color_wheel();
+    disable_zoom_mode();
+    unbind_zoom_events();
+    bind_nav_events();
     $("#nav").addClass("active");
+
+}
+
+function disable_zoom_mode() {
+    unbind_zoom_events();
+    $("#zoom").removeClass("active");
+}
+
+function switch_to_zoom_mode() {
+    disable_edit_mode();
+    disable_nav_mode();
+    bind_zoom_events();
+    $("#zoom").addClass("active");
 }
 
 function setActivePencilMode(elem) {
@@ -71,6 +100,10 @@ function init_canvas() {
 
     init_colors();
 
+    $("#zoom").bind("click", function (e) {
+        resizeImageToWindow();
+        switch_to_zoom_mode();
+    });
     $("#undo").click(undo);
     $("#redo").click(redo);
     $("#edit").click(switch_to_edit_mode);
@@ -101,6 +134,16 @@ function init_canvas() {
     $("#color1").click(function () {
         color = $(this).css("background-color");
     });
+}
+
+
+
+function bind_zoom_events() {
+    Hammer(canvas[0]).on("tap", zoomIn);
+}
+
+function unbind_zoom_events() {
+    Hammer(canvas[0]).off("tap", zoomIn);
 }
 
 function unbind_draw_events() {

@@ -29,6 +29,9 @@ $(document).ready(function () {
     $(".nav-collapse").click(function() {
        $(this).collapse('hide');
     });
+    $(document).bind("dblclick", function (e) {
+        e.preventDefault();
+    });
 });
 
 function doUpdateFonts() {
