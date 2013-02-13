@@ -1,5 +1,7 @@
 Stallgraffiti::Application.routes.draw do
 
+  get "home/index"
+
   resources :revisions
 
 

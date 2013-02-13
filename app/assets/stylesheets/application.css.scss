@@ -12,17 +12,6 @@
  *= require_tree .
  */
 
-h1 {
-    color: white;
-    background-color: black;
-    font-size: 4em;
-}
-
-a.btn {
-    background: white;
-    color: black;
-}
-
 * {
     font-family: Helvetica;
 }
@@ -83,7 +72,15 @@ h1 {
 .select_mode {
     display: none;
 }
-    /*
-body {
-    height: 100%;
-}     */
+
+
+.jumbotron {
+  text-align: center;
+}
+
+@media all and (max-width: 729px) {
+
+  .jumbotron {
+  }
+
+}
