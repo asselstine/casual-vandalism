@@ -10,18 +10,17 @@
   <li class="span4">
     <div class="thumbnail">
       <%= link_to wall, :class=>"img" do %>
-        <%= image_tag wall.revisions.last.image.url(:square), :style=>"margin: 0 auto;" %>
+        <%= image_tag wall.revisions.last.image.url(:square), :class=>"width100" %>
       <% end %>
       <div class="caption">
+        <% if wall.is_owned_by? @current_user %>
+            <p class="controls">
+              <%= link_to 'Edit', edit_wall_path(wall) %>
+              <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </p>
+        <% end %>
           <h3><%= link_to wall.name, wall %>
-            <% if wall.is_owned_by? @current_user %>
-                <p class="controls">
-                  <small>
-                  <%= link_to 'Edit', edit_wall_path(wall) %>
-                  <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
-                  </small>
-                </p>
-            <% end %>
+
           </h3>
 
       </div>

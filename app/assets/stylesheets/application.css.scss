@@ -52,7 +52,6 @@ h1 {
 
 .jumbotron h1 {
   margin-bottom: 0;
-  font-size: 60px;
   line-height: 1;
   letter-spacing: -1px;
   color: inherit;
@@ -72,10 +71,31 @@ h1 {
   border-radius: 6px;
 }
 
-@media all and (max-width: 729px) {
+
+@media all and (min-width: 0px) and (max-width: 420px) {
 
   .jumbotron {
+    font-size: 12px;
   }
+  .jumbotron h1 {
+    font-size: 40px;
+  }
+  .jumbotron p {
+    font-size: 14px;
+  }
+  .jumbotron .btn-large {
+    font-size: 14px;
+    padding: 8px 11px;
+  }
+
+}
+
+@media all and (min-width: 421px) {
+
+  .jumbotron h1 {
+    font-size: 60px;
+  }
+
 
 }
 
@@ -91,11 +111,6 @@ h1 {
   margin-left: auto;
 }
 
-.caption h3 {
-  position: relative;
-  .controls {
-    position: absolute;
-    top: -30px;
-    left: -5px;
-  }
+.width100 {
+  width: 100%;
 }

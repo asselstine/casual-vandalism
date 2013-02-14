@@ -41,10 +41,12 @@
           <li class="dropdown">
               <a class="dropdown-toggle"
                  data-toggle="dropdown"
-                 href="#"><%=current_user.email%>
+                 href="#">You
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
+                <li class="disabled"><a href="#"><%=current_user.email%></a></li>
+                <li class="divider"></li>
                 <li><%= link_to "Sign Out", destroy_user_session_path(:after => request.env['PATH_INFO']), :method=>:delete %></li>
               </ul>
           </li>
