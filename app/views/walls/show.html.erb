@@ -22,15 +22,8 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
 
-
-      <!-- Be sure to leave the brand out there if you want it shown -->
-
+      <%= link_to "CV", home_index_path, :class=>"brand"%>
 
       <ul class="nav">
         <li><%= link_to "walls", walls_path %></li>
@@ -80,25 +73,20 @@
           </li>
         </ul>
       </div>
+        &nbsp;
+      <a class="btn" id="upload" href="#">Save</a>
 
-      <a class="btn" id="nav" href="#"><i class="icon-move"></i></a>
-      <a class="btn" id="zoom" href="#"><i class="icon-search"></i></a>
-      <a class="btn" id="undo" href="#"><i class="icon-chevron-left"></i></a>
-      <a class="btn" id="redo" href="#"><i class="icon-chevron-right"></i></a>
-      <!--
-      <a class="btn" id="zoom" href="#"><i class="icon-search"></i></a>
-           -->
-      <!-- Everything you want hidden at 940px or less, place within here -->
-      <div class="nav-collapse collapse pull-right">
-        <!-- .nav, .navbar-search, .navbar-form, etc -->
-        <ul class="nav">
-          <li><a id="upload" href="#"><i class="icon-file"></i> Save</a></li>
-          <li><a href="#"><i class="icon-trash"></i> Clear Page</a></li>
-          <li><a href="#"><i class="icon-eject"></i> Sign Out</a></li>
-        </ul>
-
-      </div>
     </div>
+  </div>
+</div>
+
+<div class="navbar navbar-fixed-bottom">
+  <div class="navbar-inner">
+          <a class="btn" id="nav" href="#"><i class="icon-move"></i> Move</a>
+          <a class="btn" id="zoom" href="#"><i class="icon-search"></i> Zoom</a>
+          <a class="btn" id="undo" href="#"><i class="icon-chevron-left"></i> Undo</a>
+          <a class="btn" id="redo" href="#">Redo <i class="icon-chevron-right"></i></a>
+
   </div>
 </div>
 
