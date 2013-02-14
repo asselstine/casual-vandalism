@@ -2,6 +2,8 @@
 
 var ctms = [];
 var touchX, touchY;
+var firstTransformTouchX, firstTransformTouchY = 0;
+var lastTransformTouchX, lastTransformTouchY = 0;
 
 var imageWidth, imageHeight;
 var containerWidth, containerHeight;
@@ -121,18 +123,28 @@ function handle_nav_event(e) {
             break;
         case "transform":
             pushContext();
+            if (firstTransformTouchY != 0) {
+                translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
+            } else {
+                firstTransformTouchX = e.gesture.center.pageX;
+                firstTransformTouchY = e.gesture.center.pageY;
+            }
             zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
             lastGestureScale = e.gesture.scale;
-            touchX = e.gesture.center.pageX;
-            touchY = e.gesture.center.pageY;
+            lastTransformTouchX = e.gesture.center.pageX;
+            lastTransformTouchY = e.gesture.center.pageY;
             popContext();
             break;
         case "release":
-            if (lastGestureScale != 1) {
-                zoomPage(touchX, touchY, lastGestureScale);
-                updateTransform();
+            if (firstTransformTouchX != 0) {
+                translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
             }
-
+            if (lastGestureScale != 1) {
+                zoomPage(lastTransformTouchX, lastTransformTouchY, lastGestureScale);
+            }
+            updateTransform();
+            firstTransformTouchX = 0;
+            firstTransformTouchY = 0;
             break;
         default:
             break;
