@@ -300,7 +300,8 @@ function upload() {
 
         },
         complete : function () {
-            $(".upload-alert").alert('close');
+            clickHistory = new Array();
+            redraw();
         },
         processData: false,  // tell jQuery not to process the data
         contentType: false   // tell jQuery not to set contentType

@@ -82,8 +82,8 @@ function init_container() {
 
 function resizeImageToWindow() {
     clearTransform();
-    if ($(document).width() < imageWidth) {
-        scale( $(document).width() / imageWidth );
+    if (container.width() < imageWidth) {
+        scale( container.width() / imageWidth );
         updateTransform();
     }
 }
@@ -122,13 +122,14 @@ function handle_nav_event(e) {
             updateTransform();
             break;
         case "transform":
-            pushContext();
-            if (firstTransformTouchY != 0) {
-                translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
-            } else {
+            if (firstTransformTouchX == 0) {
                 firstTransformTouchX = e.gesture.center.pageX;
                 firstTransformTouchY = e.gesture.center.pageY;
+                lastTransformTouchX = firstTransformTouchX;
+                lastTransformTouchY = firstTransformTouchY;
             }
+            pushContext();
+            translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
             zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
             lastGestureScale = e.gesture.scale;
             lastTransformTouchX = e.gesture.center.pageX;
@@ -136,13 +137,10 @@ function handle_nav_event(e) {
             popContext();
             break;
         case "release":
-            if (firstTransformTouchX != 0) {
-                translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
-            }
             if (lastGestureScale != 1) {
+                translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
                 zoomPage(lastTransformTouchX, lastTransformTouchY, lastGestureScale);
             }
-            updateTransform();
             firstTransformTouchX = 0;
             firstTransformTouchY = 0;
             break;
