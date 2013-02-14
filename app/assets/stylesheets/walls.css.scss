@@ -2,15 +2,6 @@
 h1 {
   margin: 10px;
 }
- /*
-body {
-  width: 96%;
-  max-width: 96%;
-  padding-left: 2%;
-  padding-right: 2%;
-  height: 100%;
-  overflow: hidden;
-}  */
 
 #canvas_container {
   position: relative;
@@ -72,4 +63,8 @@ body {
 #color6 {
   height:16px;
   background-color: #a37d04;
+}
+
+body {
+  padding-top: 40px !important;
 }

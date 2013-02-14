@@ -1,9 +1,17 @@
-<div class="container">
-
-<div class="hero-unit">
-  <h1>Casual Vandalism</h1>
-</div>
-
-
+<div class="jumbotron">
+      <h1>Casual Vandalism</h1>
+      <p>
+           Upload and vandalize photos.
+      </p>
+      <p>
+        <% if current_user %>
+        <%= link_to "See photos", walls_path, :class=>"btn btn-primary btn-large" %>
+        <% else %>
+          <a class="btn btn-primary btn-large">
+            Sign up
+          </a>
+          <%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2), :class=>"btn btn-primary btn-large" %>
+        <% end %>
+      </p>
 
 </div>

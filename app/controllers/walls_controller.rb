@@ -1,4 +1,7 @@
 class WallsController < ApplicationController
+
+  before_filter :authenticate_user!, :only => [ :new, :edit, :create, :update, :destroy ]
+
   # GET /walls
   # GET /walls.json
   def index
@@ -32,7 +35,7 @@ class WallsController < ApplicationController
     @wall = Wall.find(params[:id])
     @revision = @wall.get_last_revision
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render "show", :layout => "drawing" }
       format.json { render json: @wall }
     end
   end
@@ -51,12 +54,17 @@ class WallsController < ApplicationController
   # GET /walls/1/edit
   def edit
     @wall = Wall.find(params[:id])
+    unless @wall.is_owned_by? current_user
+      redirect_to "index", notice: "You are not allowed to edit this wall."
+      return
+    end
   end
 
   # POST /walls
   # POST /walls.json
   def create
     @wall = Wall.new(params[:wall])
+    @wall.user = current_user
 
     respond_to do |format|
       if @wall.save
@@ -72,7 +80,13 @@ class WallsController < ApplicationController
   # PUT /walls/1
   # PUT /walls/1.json
   def update
+
     @wall = Wall.find(params[:id])
+
+    unless @wall.is_owned_by? current_user
+      redirect_to "index", notice: "You are not allowed to edit this wall."
+      return
+    end
 
     respond_to do |format|
       if @wall.update_attributes(params[:wall])
@@ -89,6 +103,12 @@ class WallsController < ApplicationController
   # DELETE /walls/1.json
   def destroy
     @wall = Wall.find(params[:id])
+
+    unless @wall.is_owned_by? current_user
+      redirect_to "index", notice: "You are not allowed to destroy this wall."
+      return
+    end
+
     @wall.destroy
 
     respond_to do |format|

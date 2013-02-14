@@ -28,11 +28,12 @@
         <span class="icon-bar"></span>
       </a>
 
+
       <!-- Be sure to leave the brand out there if you want it shown -->
-      <a class="brand" href="/walls"><%=@wall.name%></a>
+
 
       <ul class="nav">
-
+        <li><%= link_to "walls", walls_path %></li>
       </ul>
       <div class="btn-group">
         <a class="btn btn-select-size dropdown-toggle" data-toggle="dropdown" href="#">
@@ -82,8 +83,8 @@
 
       <a class="btn" id="nav" href="#"><i class="icon-move"></i></a>
       <a class="btn" id="zoom" href="#"><i class="icon-search"></i></a>
-      <a class="btn" id="undo" href="#"><i class="icon-arrow-left"></i></a>
-      <a class="btn" id="redo" href="#"><i class="icon-arrow-right"></i></a>
+      <a class="btn" id="undo" href="#"><i class="icon-chevron-left"></i></a>
+      <a class="btn" id="redo" href="#"><i class="icon-chevron-right"></i></a>
       <!--
       <a class="btn" id="zoom" href="#"><i class="icon-search"></i></a>
            -->
@@ -108,13 +109,6 @@
   </canvas>
 
 </div>
-
-<%= form_tag destroy_user_session_path, :method => :delete do %>
-    <%= submit_tag "Sign out" %>
-<% end %>
-<%= form_tag wall_images_path(@wall), :method => "delete" do %>
-    <%= submit_tag "Delete all" %>
-<% end %>
 
  <script type="text/javascript">
 

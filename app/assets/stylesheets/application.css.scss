@@ -26,45 +26,6 @@ h1 {
     -webkit-user-select: none;
 }
 
-.controls {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-}
-
-.controls {
-    position: fixed;
-    z-index: 1;
-}
-
-.controls a,p {
-    margin: 4px;
-    opacity: 0.8;
-    text-align: center;
-    cursor: pointer;
-    float: left;
-}
-
-.controls a {
-    font-size: 2em;
-    line-height: 2em;
-    background: #454545;
-    color: #ffe60d;
-    width: 4em;
-    z-index: 10;
-}
-
-.controls p {
-    font-size: 1em;
-    width: 8em;
-    background: #fffdd1;
-    color: #454545;
-}
-
-.controls a:hover {
-    color: #fffec9;
-    opacity: 0.9;
-}
-
 .edit_mode {
     display: none;
 }
@@ -76,6 +37,39 @@ h1 {
 
 .jumbotron {
   text-align: center;
+  margin-top: 0px;
+  padding: 60px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+  color: inherit;
+  background-color: #eeeeee;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.jumbotron h1 {
+  margin-bottom: 0;
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: inherit;
+}
+
+.smalltron {
+  margin-top: 0px;
+  padding: 10px 60px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+  color: inherit;
+  background-color: #eeeeee;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
 }
 
 @media all and (max-width: 729px) {
@@ -83,4 +77,25 @@ h1 {
   .jumbotron {
   }
 
+}
+
+.thumbnail > * {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.thumbnail > a.img {
+  display: block;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.caption h3 {
+  position: relative;
+  .controls {
+    position: absolute;
+    top: -30px;
+    left: -5px;
+  }
 }

@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stallgraffiti</title>
+  <title>Casual Vandalism</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
 
   <%= javascript_include_tag "application" %>
 
   <link href="/css/bootstrap.css" rel="stylesheet">
   <style type="text/css">
-      body {
-          padding-top: 40px !important;
-      }
       @media (max-width: 979px) {
           .navbar-fixed-top {
               position: fixed !important;
@@ -18,16 +15,45 @@
               margin-left: 0px !important;
           }
       }
+      body {
+          padding-top: 0px !important;
+      }
   </style>
   <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/hammer-latest.min.js"></script>
   <script type="text/javascript" src="/js/sylvester.js"></script>
-  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width">
 </head>
 <body>
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <%= link_to "CV", home_index_path, :class => "brand" %>
+    <ul class="nav">
+        <li><%= link_to "walls", walls_path %></li>
+    </ul>
+
+    <ul class="nav pull-right">
+      <% if current_user %>
+          <li class="dropdown">
+              <a class="dropdown-toggle"
+                 data-toggle="dropdown"
+                 href="#"><%=current_user.email%>
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Sign Out", destroy_user_session_path(:after => request.env['PATH_INFO']), :method=>:delete %></li>
+              </ul>
+          </li>
+      <% else %>
+          <li><%= link_to 'Sign in', new_user_session_path %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
 <p class="alert alert-info" style="display:none;"><%= notice %></p>
 <p class="alert alert-error" style="display:none;"><%= alert %></p>

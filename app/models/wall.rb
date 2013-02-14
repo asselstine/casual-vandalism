@@ -4,6 +4,7 @@ class Wall < ActiveRecord::Base
                     :styles => { :original => "1200x1200>" }
   has_many :revisions, :dependent => :destroy
   has_many :images, :dependent => :destroy
+  belongs_to :user
   validates :name, :format => { :with => /[a-zA-Z0-9 ]+/, :message => "Only letters, numbers or spaces are allowed." }
   validates :name, :length => { :in => 4..64 }
   validates :name, :uniqueness => true
@@ -48,5 +49,9 @@ class Wall < ActiveRecord::Base
       revision = build_revision
     end
     return revision
+  end
+
+  def is_owned_by? user
+     self.user == user
   end
 end
