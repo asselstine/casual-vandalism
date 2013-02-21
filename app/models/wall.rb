@@ -1,5 +1,14 @@
+class BackgroundValidator < ActiveModel::Validator
+  def validate(record)
+     if /missing/.match(record.background.url) and record.background_url == ""
+       record.errors[:background] << "You must include either a background or url"
+       record.errors[:background_url] << "You must include either a background or url"
+     end
+  end
+end
+
 class Wall < ActiveRecord::Base
-  attr_accessible :header_color, :name, :background
+  attr_accessible :header_color, :background_url, :name, :background
   has_attached_file :background, #:processors => [:auto_orient],
                     :styles => { :original => "1200x1200>" }
   has_many :revisions, :dependent => :destroy
@@ -8,11 +17,17 @@ class Wall < ActiveRecord::Base
   validates :name, :format => { :with => /[a-zA-Z0-9 ]+/, :message => "Only letters, numbers or spaces are allowed." }
   validates :name, :length => { :in => 4..64 }
   validates :name, :uniqueness => true
+  validates_with BackgroundValidator
+
   def build_revision
      #build an image using the current background and all the images
-
+    comp = nil
     #current background image
-    comp = get_magick_image_from_url background.url
+    if not /missing/.match(background.url)
+      comp = get_magick_image_from_url background.url
+    else
+      comp = get_magick_image_from_url background_url
+    end
 
     for image in images
       comp.composite!( get_magick_image_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
@@ -37,8 +52,12 @@ class Wall < ActiveRecord::Base
       url = "http://localhost:3000#{url.split('?')[0]}"
     end
     comp = Magick::ImageList.new
-    urlimage = open(url)
-    comp.from_blob(urlimage.read)
+    begin
+      urlimage = open(url)
+      comp.from_blob(urlimage.read)
+    rescue Exception => e
+      puts e.message
+    end
     return comp
   end
 

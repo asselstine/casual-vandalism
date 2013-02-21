@@ -68,6 +68,8 @@ function init_container() {
     container = $("#canvas_container");
     canvas = $("#canvas");
 
+    $(".btn")
+
     setTransformOrigin(canvas[0]);
     setTransformOrigin(image[0]);
 
