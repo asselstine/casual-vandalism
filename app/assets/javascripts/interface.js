@@ -81,7 +81,7 @@ function init_container() {
         container.css("width", "100%");
         container.css("height", this.height+"px");
     });
-    var wrapOffset = container.offset();
+
     containerWidth = container.width();
     containerHeight = container.height();
 
@@ -102,6 +102,7 @@ function unbind_nav_events() {
 }
 
 function bind_nav_events() {
+    console.debug("bind_nav_events");
     Hammer( container[0], {
         transform_always_block: true,
         drag_block_horizontal: true,
@@ -128,12 +129,12 @@ function handle_nav_event(e) {
         case "doubletap":
             zoomOutPage(e.gesture.center.pageX, e.gesture.center.pageY);
             window.clearTimeout(zoomTimeout);
-            console.debug("clear timeout");
+            //console.debug("clear timeout");
             zoomTimeout = false;
             break;
         case "tap":
             if (!zoomTimeout) {
-                console.debug("add timeout");
+                //console.debug("add timeout");
                 zoomTimeout = window.setTimeout(doZoomInPage(touchX,touchY), 300);
             }
             break;

@@ -39,11 +39,12 @@ function switch_to_edit_mode() {
     disable_zoom_mode();
     disable_color_wheel();
     bind_draw_events();
-    $(".btn-select-size").addClass("active");
+    $(".btn-select-size").removeClass("active");
+    $(".draw-mode").addClass("active");
 }
 
 function disable_edit_mode() {
-    $(".btn-select-size").removeClass("active");
+    $(".draw-mode").removeClass("active");
     unbind_draw_events();
 }
 
@@ -82,15 +83,17 @@ function setActivePencilMode(elem) {
     switch_to_edit_mode();
     $(".select-size li.active").removeClass("active");
     $(elem).parent().addClass("active");
-    $(".btn-select-size").addClass("active");
 }
 
 function init_colors() {
-    $("#color1").addClass("active");
-    color = $("#color1").css("background-color");
     $(".select-color a").click(function () {
         color = $(this).css("background-color");
+        $(".icon-colorwheel").css("background-color", color);
         switch_to_edit_mode();
+    });
+    $(".select-color a").each(function () {
+       $(this).trigger("click");
+       return false;
     });
 }
 
@@ -99,16 +102,14 @@ function init_canvas() {
     paint = false;
 
     init_colors();
-
-    $("#zoom").bind("click", function (e) {
-        resizeImageToWindow();
-        switch_to_zoom_mode();
+    Hammer($(".draw-mode")[0]).on("tap", function (e) {
+        console.debug("draw hit");
+        switch_to_edit_mode();
     });
-    $("#undo").click(undo);
-    $("#redo").click(redo);
-    $("#edit").click(switch_to_edit_mode);
-    $("#nav").click(function (e) {
+    Hammer($("#nav")[0]).on("tap", function (e) {
+        console.debug("nav hit");
         if ($(this).hasClass("active")) {
+            console.debug("disabling nav");
             unbind_nav_events();
             $(this).removeClass("active");
             $(this).blur();
@@ -116,6 +117,8 @@ function init_canvas() {
             switch_to_nav_mode();
         }
     });
+    $(".undo").click(undo);
+    $(".redo").click(redo);
     $("#upload").click(function () {
         upload();
     });
@@ -130,9 +133,6 @@ function init_canvas() {
     $("#large").click(function () {
         size = LARGE_SIZE;
         setActivePencilMode(this);
-    });
-    $("#color1").click(function () {
-        color = $(this).css("background-color");
     });
 }
 

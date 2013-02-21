@@ -4,14 +4,6 @@
       -webkit-user-select: none;
   }
 
-  .icon-colorwheel {
-      background-image: url("/assets/color-wheel-icon.png");
-      background-position: center;
-      width: 16px;
-      height: 16px;
-      margin-top: -1px;
-  }
-
 </style>
 <div id="wall_images_path" style="display: none"><%=wall_images_path(@wall)%></div>
 
@@ -23,11 +15,14 @@
   <div class="navbar-inner">
     <div class="container">
 
-      <%= link_to "CV", home_index_path, :class=>"brand"%>
+      <%= link_to "CV", home_index_path, :class=>"brand hidden-phone"%>
 
-      <ul class="nav">
+      <ul class="nav hidden-phone">
         <li><%= link_to "walls", walls_path %></li>
       </ul>
+
+      <a class="btn pull-left hidden-desktop hidden-tablet" href="<%=walls_path%>"><i class="icon-home"></i> </a>
+                              &nbsp;
       <div class="btn-group">
         <a class="btn btn-select-size dropdown-toggle" data-toggle="dropdown" href="#">
           <i class="icon-pencil"></i>
@@ -74,19 +69,20 @@
         </ul>
       </div>
         &nbsp;
-      <a class="btn" id="upload" href="#">Save</a>
-
+      <a class="btn dropdown-toggle draw-mode" data-toggle="dropdown" href="#"><i class="icon-pencil"></i> </a>
+      &nbsp;
+      <a class="btn" id="nav" href="#"><i class="icon-move"></i> </a>
+      <a class="btn hidden-phone undo" href="#"><i class="icon-chevron-left"></i> Undo</a>
+      <a class="btn hidden-phone redo" href="#">Redo <i class="icon-chevron-right"></i></a>
+      <a class="btn pull-right" id="upload" href="#"><i class="icon-download-alt"></i></a>
     </div>
   </div>
 </div>
 
-<div class="navbar navbar-fixed-bottom">
+<div class="navbar navbar-fixed-bottom hidden-tablet hidden-desktop">
   <div class="navbar-inner">
-          <a class="btn" id="nav" href="#"><i class="icon-move"></i> Move</a>
-          <a class="btn" id="zoom" href="#"><i class="icon-search"></i> Zoom</a>
-          <a class="btn" id="undo" href="#"><i class="icon-chevron-left"></i></a>
-          <a class="btn" id="redo" href="#"><i class="icon-chevron-right"></i></a>
-
+          <a class="btn pull-left undo" href="#"><i class="icon-chevron-left"></i> Undo</a>
+          <a class="btn pull-right redo" href="#">Redo <i class="icon-chevron-right"></i></a>
   </div>
 </div>
 
