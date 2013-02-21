@@ -16,6 +16,11 @@ class WallsController < ApplicationController
     end
   end
 
+  def qrcode
+    @wall = Wall.find(params[:id])
+    render 'qrcode', :layout => "raw"
+  end
+
   def show_by_name
     name = params[:wall_name].gsub('_', ' ')
     @wall = Wall.find_by_name name

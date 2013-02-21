@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="qr-svg">
+  <% qr.modules.each_index do |x| %>
+      <% qr.modules.each_index do |y| %>
+          <% if qr.dark?(x,y) %>
+              <rect x="<%=size*y%>" y="<%=size*x%>" width="<%=size%>" height="<%=size%>" style="fill:black;"/>
+          <% end %>
+      <% end %>
+  <% end %>
+</svg>

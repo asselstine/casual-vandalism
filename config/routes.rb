@@ -1,12 +1,16 @@
 Stallgraffiti::Application.routes.draw do
 
+  get "qrcodes" => "qr_codes#all"
+
   get "home/index"
 
   resources :revisions
 
-
   resources :walls do
     resources :images
+    member do
+       get 'qrcode'
+    end
   end
 
   resources :images

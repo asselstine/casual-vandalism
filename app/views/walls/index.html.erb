@@ -1,6 +1,5 @@
 <div class="smalltron">
   <h1>Walls <%= link_to "+ New", new_wall_path, :class => "btn btn-primary" %></h1>
-
 </div>
 
 
@@ -12,6 +11,7 @@
       <%= link_to wall, :class=>"img" do %>
         <%= image_tag wall.revisions.last.image.url(:square), :class=>"width100" %>
       <% end %>
+
       <div class="caption">
         <% if wall.is_owned_by? @current_user %>
             <p class="controls">
@@ -19,9 +19,8 @@
               <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
             </p>
         <% end %>
-          <h3><%= link_to wall.name, wall %>
-
-          </h3>
+          <h3><%= link_to wall.name, wall %></h3>
+            <%= link_to 'QR Code', qrcode_wall_path(wall) %>
 
       </div>
     </div>

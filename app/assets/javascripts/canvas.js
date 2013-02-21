@@ -104,13 +104,10 @@ function init_canvas() {
 
     init_colors();
     Hammer($(".draw-mode")[0]).on("tap", function (e) {
-        console.debug("draw hit");
         switch_to_edit_mode();
     });
     Hammer($("#nav")[0]).on("tap", function (e) {
-        console.debug("nav hit");
         if ($(this).hasClass("active")) {
-            console.debug("disabling nav");
             unbind_nav_events();
             $(this).removeClass("active");
             $(this).blur();

@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
+gem 'rqrcode'
 
 #For image processing
 gem 'rmagick', '>=2.11', :require => 'RMagick'

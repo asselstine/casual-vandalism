@@ -1,0 +1,26 @@
+<%
+   @size = 4
+%>
+<style type="text/css">
+    .qr-grid {
+        float: left;
+        width: <%=@size*33%>px;
+        margin: 10px;
+    }
+    .qr-svg {
+        height: <%=@size*33%>px;
+    }
+</style>
+
+<div class="container">
+
+<% for wall in @walls %>
+
+  <div class="qr-grid">
+    <h4><%=wall.name%></h4>
+    <%= render 'qr_codes/qr_svg', :qr => RQRCode::QRCode.new( wall_url(wall), :size => 4 ), :size => @size %>
+  </div>
+
+<% end %>
+
+</div>

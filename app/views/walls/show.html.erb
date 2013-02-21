@@ -87,17 +87,15 @@
 </div>
 
 <div id="canvas_container">
-
-  <img style="max-width: none;" id="background" src='<%="#{@wall.revisions.last.image.url}"%>'/>
+  <img style="max-width: none;" id="background" src='' alt="Uploading... please refresh after several seconds."/>
   <canvas id="canvas">
   </canvas>
-
 </div>
 
  <script type="text/javascript">
 
      $(document).ready(function () {
-         init_container();
+         init_container('<%="#{@wall.revisions.last.image.url}"%>');
          init_canvas();
      });
 

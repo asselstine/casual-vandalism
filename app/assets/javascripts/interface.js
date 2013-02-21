@@ -62,7 +62,7 @@ function getContainerOffsetTop() {
     return container.offset().top;
 }
 
-function init_container() {
+function init_container(background_image_url) {
     $("#background").css("max-width", "none !important");
     image = $("#background");
     container = $("#canvas_container");
@@ -74,6 +74,7 @@ function init_container() {
     setTransformOrigin(image[0]);
 
     image.bind("load", function () {
+        console.debug("background load");
         clearTransform();
         imageWidth = this.width;
         imageHeight = this.height;
@@ -81,11 +82,13 @@ function init_container() {
         canvas[0].height = this.height;
         resizeImageToWindow();
         container.css("width", "100%");
-        container.css("height", this.height+"px");
+        console.debug("setting height: " + imageHeight);
+        container.height(imageHeight);
+        containerWidth = container.width();
+        containerHeight = container.height();
     });
-
-    containerWidth = container.width();
-    containerHeight = container.height();
+    image[0].src = background_image_url + "?t="+new Date().getTime();
+    console.debug("loaded url " + background_image_url + "?t="+new Date().getTime());
 
     ctms.push( Matrix.I(3) );
 }
@@ -131,12 +134,10 @@ function handle_nav_event(e) {
         case "doubletap":
             zoomOutPage(e.gesture.center.pageX, e.gesture.center.pageY);
             window.clearTimeout(zoomTimeout);
-            //console.debug("clear timeout");
             zoomTimeout = false;
             break;
         case "tap":
             if (!zoomTimeout) {
-                //console.debug("add timeout");
                 zoomTimeout = window.setTimeout(doZoomInPage(touchX,touchY), 300);
             }
             break;
@@ -175,11 +176,6 @@ function handle_nav_event(e) {
             }
             firstTransformTouchX = 0;
             firstTransformTouchY = 0;
-
-//            if (new Date().getTime() - lastTransformTime < 50) { //if the lastTransform occurred a long ago, just zoom
-//                console.debug("Zoom");
-//                zoomInPage(touchX, touchY);
-//            }
             break;
         default:
             break;
@@ -226,12 +222,10 @@ function translate(dx, dy) {
         [0, 1, dy],
         [0, 0, 1 ]
     ]);
-    //  console.debug("translate: " + tm.inspect());
     pushContext( tm.multiply(popContext()));
 }
 
 function scale(s) {
-    //   console.debug("scaling with " + s);
     var sm = Matrix.create([
         [s, 0, 0],
         [0, s, 0],
