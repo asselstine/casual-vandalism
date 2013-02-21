@@ -18,7 +18,7 @@
 
   <div class="qr-grid">
     <h4><%=wall.name%></h4>
-    <%= render 'qr_codes/qr_svg', :qr => RQRCode::QRCode.new( wall_url(wall) ), :size => @size %>
+    <%= render 'qr_codes/qr_svg', :qr => RQRCode::QRCode.new( wall_url(wall), :size => 4, :level=>:m ), :size => @size %>
   </div>
 
 <% end %>
