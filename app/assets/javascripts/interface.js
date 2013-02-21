@@ -25,8 +25,16 @@ function updateDx(e) {
     return dx;
 }
 
+function zoomOutPage(pageX, pageY) {
+    zoomPage( pageX, pageY, 1 / scaleStep);
+}
+
 function zoomIn(e) {
     zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, scaleStep);
+}
+
+function zoomInPage(pageX, pageY) {
+    zoomPage( pageX, pageY, scaleStep);
 }
 
 function zoomPage(pageX, pageY, scaleVal) {
@@ -98,7 +106,7 @@ function bind_nav_events() {
         transform_always_block: true,
         drag_block_horizontal: true,
         drag_block_vertical: true,
-        drag_min_distance: 0}).on("drag touch release transform", handle_nav_event);
+        drag_min_distance: 0}).on("tap doubletap drag touch release transform", handle_nav_event);
     container.bind("touchstart.nav", function (e) {
         e.preventDefault();
     });
@@ -107,8 +115,28 @@ function bind_nav_events() {
     });
 }
 
+function doZoomInPage(pageX, pageY) {
+    return function () {
+        zoomInPage(pageX, pageY);
+        zoomTimeout = false;
+    }
+}
+var zoomTimeout = false;
+
 function handle_nav_event(e) {
     switch(e.type) {
+        case "doubletap":
+            zoomOutPage(e.gesture.center.pageX, e.gesture.center.pageY);
+            window.clearTimeout(zoomTimeout);
+            console.debug("clear timeout");
+            zoomTimeout = false;
+            break;
+        case "tap":
+            if (!zoomTimeout) {
+                console.debug("add timeout");
+                zoomTimeout = window.setTimeout(doZoomInPage(touchX,touchY), 300);
+            }
+            break;
         case "touch":
             touchX = e.gesture.center.pageX;
             touchY = e.gesture.center.pageY;
@@ -128,6 +156,7 @@ function handle_nav_event(e) {
                 lastTransformTouchX = firstTransformTouchX;
                 lastTransformTouchY = firstTransformTouchY;
             }
+
             pushContext();
             translate(lastTransformTouchX - firstTransformTouchX, lastTransformTouchY - firstTransformTouchY);
             zoomPage(e.gesture.center.pageX, e.gesture.center.pageY, e.gesture.scale);
@@ -143,6 +172,11 @@ function handle_nav_event(e) {
             }
             firstTransformTouchX = 0;
             firstTransformTouchY = 0;
+
+//            if (new Date().getTime() - lastTransformTime < 50) { //if the lastTransform occurred a long ago, just zoom
+//                console.debug("Zoom");
+//                zoomInPage(touchX, touchY);
+//            }
             break;
         default:
             break;

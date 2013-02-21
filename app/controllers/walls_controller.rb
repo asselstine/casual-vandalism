@@ -103,17 +103,14 @@ class WallsController < ApplicationController
   # DELETE /walls/1.json
   def destroy
     @wall = Wall.find(params[:id])
-
-    unless @wall.is_owned_by? current_user
+    if @wall.is_owned_by? current_user
+      @wall.destroy
+      respond_to do |format|
+        format.html { redirect_to walls_url }
+        format.json { head :no_content }
+      end
+    else
       redirect_to "index", notice: "You are not allowed to destroy this wall."
-      return
-    end
-
-    @wall.destroy
-
-    respond_to do |format|
-      format.html { redirect_to walls_url }
-      format.json { head :no_content }
     end
   end
 end
