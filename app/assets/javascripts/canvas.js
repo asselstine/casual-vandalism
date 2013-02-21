@@ -19,7 +19,7 @@ var colors = [
 ];
 
 var color = "#df4b26";
-var size = SMALL_SIZE;
+var size = MEDIUM_SIZE;
 
 var clickHistory = new Array();
 
@@ -41,6 +41,7 @@ function switch_to_edit_mode() {
     bind_draw_events();
     $(".btn-select-size").removeClass("active");
     $(".draw-mode").addClass("active");
+    help("You can draw on the canvas by dragging.  Try changing the size or color using the provided menus.");
 }
 
 function disable_edit_mode() {
@@ -64,7 +65,7 @@ function switch_to_nav_mode() {
     unbind_zoom_events();
     bind_nav_events();
     $("#nav").addClass("active");
-
+    help("Drag the image around.  Tap to zoom, and double tap to zoom out.  On iPhone and Android 3+ you can pinch to zoom.");
 }
 
 function disable_zoom_mode() {
@@ -289,7 +290,7 @@ function upload() {
     fd.append("image[x]", 0);
     fd.append("image[y]", 0);
     fd.append("image[canvas]", getImageBlob());
-    $(".upload-alert").alert();
+    lock("Please wait.  Uploading drawing...");
     $.ajax({
         url: $("#wall_images_path").html() + ".json",
         type: "POST",
@@ -300,6 +301,7 @@ function upload() {
 
         },
         complete : function () {
+            unlock();
             clickHistory = new Array();
             redraw();
         },

@@ -23,7 +23,7 @@
       }
   </style>
   <link href="/css/bootstrap-responsive.css" rel="stylesheet">
-  <script type="text/javascript" src="/js/hammer-latest.min.js"></script>
+  <script type="text/javascript" src="/js/hammer-latest.js"></script>
   <script type="text/javascript" src="/js/sylvester.js"></script>
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
@@ -31,6 +31,12 @@
   <meta name="viewport" content="width=device-width">
 </head>
 <body>
+
+<div class="overlay"></div>
+<div class="alert alert-info alert-dialog" id="help-dialog" style="display: none;">
+</div>
+<div class="alert alert-dialog" id="locked-dialog" style="display: none;">
+</div>
 
 <%= yield %>
 

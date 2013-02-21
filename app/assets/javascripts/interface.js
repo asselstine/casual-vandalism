@@ -99,7 +99,7 @@ function resizeImageToWindow() {
 }
 
 function unbind_nav_events() {
-    Hammer( container[0] ).off("drag touch release transform", handle_nav_event);
+    Hammer( container[0] ).off("doubletap tap drag touch release transform", handle_nav_event);
     container.unbind(".nav");
 }
 

@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84bd0f20-e2b5-42e6-9606-765efad79409" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/hammer-latest.min.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/application.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/application.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/canvas.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/canvas.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/interface.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/interface.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/wall.rb" afterPath="$PROJECT_DIR$/app/models/wall.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/walls/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/walls/_form.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/drawing.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/drawing.html.erb" />
     </list>
     <ignored path="stallgraffiti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,29 +28,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="wall.rb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/models/wall.rb">
+      <file leaf-file-name="show.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/walls/show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="8" selection-start="342" selection-end="342" vertical-scroll-proportion="0.32520324">
+            <state line="5" column="40" selection-start="97" selection-end="97" vertical-scroll-proportion="-3.125">
+              <folding>
+                <element signature="n#style#0;n#img#0;n#div#4;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="drawing.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/layouts/drawing.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="3" selection-start="1207" selection-end="1207" vertical-scroll-proportion="-14.791667">
+              <folding>
+                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="canvas.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/canvas.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="293" column="16" selection-start="7114" selection-end="7114" vertical-scroll-proportion="0.3197279">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="callbacks.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.rvm/gems/ruby-1.9.3-p362/gems/activesupport-3.2.11/lib/active_support/callbacks.rb">
+      <file leaf-file-name="application.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="26" selection-start="4173" selection-end="4173" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="56" column="16" selection-start="1745" selection-end="1745" vertical-scroll-proportion="-12.375">
+              <folding>
+                <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_form.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/walls/_form.html.erb">
+      <file leaf-file-name="application.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="23" selection-start="356" selection-end="356" vertical-scroll-proportion="-6.25">
-              <folding />
+            <state line="35" column="5" selection-start="1196" selection-end="1196" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -68,22 +98,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/walls/new.html.erb" />
         <option value="$PROJECT_DIR$/app/models/revision.rb" />
         <option value="$PROJECT_DIR$/app/views/walls/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/devise/sessions/new.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
-        <option value="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" />
-        <option value="$PROJECT_DIR$/app/views/layouts/drawing.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/walls_controller.rb" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/walls.css.scss" />
-        <option value="$PROJECT_DIR$/app/views/walls/show.html.erb" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/canvas.js" />
-        <option value="$PROJECT_DIR$/app/assets/javascripts/interface.js" />
         <option value="$PROJECT_DIR$/db/migrate/20130221190822_add_background_url_column_to_wall.rb" />
         <option value="$PROJECT_DIR$/app/views/walls/_form.html.erb" />
         <option value="$PROJECT_DIR$/app/models/wall.rb" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/interface.js" />
+        <option value="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" />
+        <option value="$PROJECT_DIR$/app/views/walls/show.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/layouts/drawing.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/application.js" />
+        <option value="$PROJECT_DIR$/app/assets/javascripts/canvas.js" />
       </list>
     </option>
   </component>
@@ -174,6 +204,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stallgraffiti" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="casualvandalism" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stallgraffiti" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="casualvandalism" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layouts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -648,12 +718,16 @@
       <created>1361471834124</created>
       <updated>1361471834124</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Added ability to upload backgrounds from URLs">
+      <created>1361476110807</created>
+      <updated>1361476110807</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="49" y="22" width="1311" height="809" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -661,8 +735,8 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286517" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2536349" sideWeight="0.21769662" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24822134" sideWeight="0.55617976" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44382024" sideWeight="0.49676898" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24822134" sideWeight="0.6755618" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3244382" sideWeight="0.49676898" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33567417" sideWeight="0.49757674" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.61376405" sideWeight="0.996838" order="5" side_tool="false" content_ui="tabs" />
@@ -710,7 +784,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed some strangeness happening with the mouse events.  Changed the button bindings so that they bind with hammer js instead of jQuery." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ability to upload backgrounds from URLs" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -743,6 +817,7 @@
     <MESSAGE value="Broke up the drawing menus into top and bottom" />
     <MESSAGE value="Unified zooming and navigation for image." />
     <MESSAGE value="Fixed some strangeness happening with the mouse events.  Changed the button bindings so that they bind with hammer js instead of jQuery." />
+    <MESSAGE value="Added ability to upload backgrounds from URLs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -751,13 +826,6 @@
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/rubymine.jar!/resources/html5-schema/block.rnc">
       <provider selected="true" editor-type-id="text-editor">
         <state line="183" column="49" selection-start="3467" selection-end="3467" vertical-scroll-proportion="0.45219123" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/layouts/drawing.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="34" selection-start="622" selection-end="622" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/walls_controller.rb">
@@ -774,15 +842,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="41" selection-start="1283" selection-end="1284" vertical-scroll-proportion="0.14893617">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/walls.css.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="77" column="0" selection-start="945" selection-end="945" vertical-scroll-proportion="0.93348116">
@@ -790,46 +849,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/application.css.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="50" selection-start="1081" selection-end="1081" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/walls/show.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="7" selection-start="281" selection-end="281" vertical-scroll-proportion="-2.2">
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#4;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="24" selection-start="538" selection-end="538" vertical-scroll-proportion="-10.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/home.js.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="12" selection-start="2580" selection-end="2580" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/interface.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="0" selection-start="2315" selection-end="2315" vertical-scroll-proportion="-3.5310218">
           <folding />
         </state>
       </provider>
@@ -857,7 +879,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/wall.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="8" selection-start="342" selection-end="342" vertical-scroll-proportion="0.32520324">
+        <state line="20" column="36" selection-start="920" selection-end="920" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/application.css.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="141" column="8" selection-start="2458" selection-end="2458" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/interface.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="129" column="5" selection-start="3153" selection-end="3154" vertical-scroll-proportion="35.76923">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/walls/show.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="40" selection-start="97" selection-end="97" vertical-scroll-proportion="-3.125">
+          <folding>
+            <element signature="n#style#0;n#img#0;n#div#4;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="5" selection-start="1196" selection-end="1196" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/application.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="16" selection-start="1745" selection-end="1745" vertical-scroll-proportion="-12.375">
+          <folding>
+            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/drawing.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="3" selection-start="1207" selection-end="1207" vertical-scroll-proportion="-14.791667">
+          <folding>
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/canvas.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="293" column="16" selection-start="7114" selection-end="7114" vertical-scroll-proportion="0.3197279">
           <folding />
         </state>
       </provider>

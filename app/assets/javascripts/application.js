@@ -16,45 +16,45 @@
 
 var i = 0;
 $(document).ready(function () {
-    $(window).scroll(function() {
-        if (window.matchMedia("(min-device-width: 320px) and (max-device-width: 480px)").matches) {
-            doUpdateFonts();
-        }
-    });
-    $(window).resize(function () {
-       if (window.matchMedia("(min-device-width: 320px) and (max-device-width: 480px)").matches) {
-           doUpdateFonts();
-       }
-    });
     $(".nav-collapse").click(function() {
        $(this).collapse('hide');
     });
     $(document).bind("dblclick", function (e) {
         e.preventDefault();
     });
+    $(".overlay").hide();
+    Hammer($(".overlay")[0]).on("tap touch release", function (e) {
+        e.stopPropagation();
+    });
+    Hammer($("#help-dialog")[0]).on("tap touch release", function (e) {
+        $("#help-dialog").fadeOut();
+        $(".overlay").fadeOut();
+        e.stopPropagation();
+    });
+    $("#help-dialog").hide();
 });
 
-function doUpdateFonts() {
-    window.setTimeout(updateFonts, 200);
+//A hash of [message] => true | false which represents which help the user has seen
+var helpWhichHasBeenSeen = {};
+
+function help(msg) {
+    if (!helpWhichHasBeenSeen[msg]) {
+        $("#help-dialog").html(msg);
+        $(".overlay").fadeIn();
+        $("#help-dialog").show();
+        helpWhichHasBeenSeen[msg] = true;
+    }
 }
 
-function updateFonts() {
-    try {
-        var fontSize = window.innerWidth / 16;
-        var newTop = $(window).scrollTop() + "px";
-        var newLeft = $(document).scrollLeft() + "px";
-        $(".controls a").css("font-size", fontSize + "px");
-        $(".controls").css("position", "absolute");
-        //bodyLog("top: " + newTop + ", " + newLeft);
-        $(".controls").css("top", newTop);
-        $(".controls").css("left", newLeft);
-    } catch (e) {
-        alert(e.message);
-    }
-    /*
+function lock(msg) {
+    $("#locked-dialog").html(msg);
+    $(".overlay").fadeIn();
+    $("#locked-dialog").show();
+}
 
-    $(".controls").css("top", newTop);
-    */
+function unlock() {
+    $(".overlay").fadeOut();
+    $("#locked-dialog").fadeOut();
 }
 
 function bodyLog(msg) {
