@@ -12,17 +12,21 @@
         <%= image_tag wall.revisions.last.image.url(:square), :class=>"width100" %>
       <% end %>
 
-      <div class="caption">
-        <% if wall.is_owned_by? @current_user %>
-            <p class="controls">
-              <%= link_to 'Edit', edit_wall_path(wall) %>
-              <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </p>
-        <% end %>
-          <h3><%= link_to wall.name, wall %></h3>
-            <%= link_to 'QR Code', qrcode_wall_path(wall) %>
-            <%= link_to 'Image URL', wall.revisions.last.image.url, :class=>"pull-right" %>
+      <div class="caption clearfix">
+        <h3><%= link_to wall.name, wall %></h3>
 
+        <% if wall.is_owned_by? @current_user %>
+        <p class="pull-left">
+            <%= link_to 'Edit', edit_wall_path(wall) %>
+           |
+            <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+        <% end %>
+        <p class="pull-right">
+        <%= link_to 'QR Code', qrcode_wall_path(wall) %>
+           |
+        <%= link_to 'Image URL', wall.revisions.last.image.url%>
+        </p>
       </div>
     </div>
   </li>
