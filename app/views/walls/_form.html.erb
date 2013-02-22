@@ -1,33 +1,44 @@
-<%= form_for(@wall, :html => { :multipart => true }) do |f| %>
-  <% if @wall.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h2>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $("#upload-background").bind("click", function (e) {
+         $("#upload-file-field").trigger("click");
+      });
+  });
+</script>
+<div class="container">
+    <%= form_for(@wall, :html => { :multipart => true }) do |f| %>
+      <fieldset>
+        <legend>Create Wall</legend>
+        <% if alert  %>
+            <div class="alert alert-error"><%=alert %></div>
+        <% end %>
+        <% if @wall.errors.any? %>
+            <div class="alert alert-error" id="error_explanation">
+              <h2><%= pluralize(@wall.errors.count, "error") %> prohibited this wall from being saved:</h2>
 
-      <ul>
-      <% @wall.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+              <ul>
+                <% @wall.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :header_color %><br />
-    <%= f.text_field :header_color %>
-  </div>
-<div class="field">
-  <%= f.label :background_url %>
-  <%= f.text_field :background_url %>
+        <h4>Name</h4>
+        <%= f.text_field :name, :placeholder=>"enter name" %>
+
+        <h4>Background</h4>
+
+        <%= f.text_field :background_url, :placeholder =>"paste URL here" %><span> ~ <i>or</i> ~</span>
+        <%= link_to "Upload file", "#", :id=>"upload-background", :class=>"btn" %>
+
+
+        <%= f.file_field :background, :style=>"display: none;", :id=>"upload-file-field" %>
+
+        <br/>
+        <br/>
+        <%= f.submit "Create Wall", :class=>"btn" %>
+      </fieldset>
+
+    <% end %>
 </div>
-  <div class="field">
-    <%= f.label :background %>
-    <%= f.file_field :background %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
