@@ -21,6 +21,7 @@
         <% end %>
           <h3><%= link_to wall.name, wall %></h3>
             <%= link_to 'QR Code', qrcode_wall_path(wall) %>
+            <%= link_to 'Image URL', wall.revisions.last.image.url, :class=>"pull-right" %>
 
       </div>
     </div>
