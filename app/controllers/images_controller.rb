@@ -56,11 +56,10 @@ class ImagesController < ApplicationController
     @image = Image.new(params[:image])
     @image.wall = @wall
     @wall.images<<@image
-    rev = @wall.build_revision
     respond_to do |format|
-      if @image.save
+      if @image.save and @wall.build_revision(@image)
         format.html { redirect_to @image, notice: 'Image was successfully created.' }
-        format.json { render json: { :image => @image, :background_url => rev.image.url }, status: :created, location: @image }
+        format.json { render json: { :image => @image, :background_url => @wall.revisions.last.image.url }, status: :created, location: @image }
       else
         format.html { render action: "new" }
         format.json { render json: @image.errors, status: :unprocessable_entity }

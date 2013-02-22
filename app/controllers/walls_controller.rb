@@ -20,7 +20,7 @@ class WallsController < ApplicationController
       return
     end
     @wall.images.delete_all
-    @wall.build_revision
+    @wall.rebuild_revision
     render 'edit'
   end
 
@@ -77,10 +77,11 @@ class WallsController < ApplicationController
   def create
     @wall = Wall.new(params[:wall])
     @wall.user = current_user
-    begin
-      @wall.build_revision
-    rescue Exception => e
-      @wall.errors[:background_url] = e.message
+
+    background_url = params[:wall][:background_url]
+    if  background_url and
+        background_url != ""
+      @wall.download_url_as_background(background_url)
     end
 
     respond_to do |format|
@@ -105,8 +106,15 @@ class WallsController < ApplicationController
       return
     end
 
+    background_url = params[:wall][:background_url]
+    if  background_url and
+        background_url != "" and
+        background_url != @wall.background_url
+      @wall.download_url_as_background(background_url)
+    end
+
     respond_to do |format|
-      if @wall.update_attributes(params[:wall]) and @wall.build_revision
+      if @wall.update_attributes(params[:wall]) and @wall.rebuild_revision
         format.html { redirect_to walls_path, notice: 'Wall was successfully updated.' }
         format.json { head :no_content }
       else

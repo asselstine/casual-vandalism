@@ -19,27 +19,46 @@ class Wall < ActiveRecord::Base
   validates :name, :uniqueness => true
   validates_with BackgroundValidator
 
-  def build_revision
-     #build an image using the current background and all the images
-    comp = nil
-    #current background image
-    if not /missing/.match(background.url)
-      comp = get_magick_image_from_url background.url
-    else
-      comp = get_magick_image_from_url background_url
-      if comp == nil
-        errors[:background_url] = "Invalid background URL"
-        return nil
+  def download_url_as_background(url)
+    # Download that url to a local file, then set it as the background
+    tempfile = Tempfile.new('comp')
+    tempfile.binmode
+    tempfile.write open(url).read
+    self.background = tempfile
+  end
+
+  #builds a revision using the background image.
+  def rebuild_revision
+    if images.length > 0
+      comp = get_imagelist_from_url background.url
+      for image in images
+        comp.composite!( get_imagelist_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
       end
+      return new_revision_with_imagelist(comp)
+    else
+      rev = Revision.new
+      rev.image = background
+      rev.wall = self
+      rev.save
+      return rev
     end
+  end
 
-    for image in images
-      comp.composite!( get_magick_image_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
+  #builds a new revision which layers the image on top of the old revision image.
+  def build_revision(image)
+    if revisions.last
+      comp = get_imagelist_from_url revisions.last.image.url
+    else
+      comp = get_imagelist_from_url background.url
     end
+    comp.composite!( get_imagelist_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
+    return new_revision_with_imagelist(comp)
+  end
 
+  def new_revision_with_imagelist(imagelist)
     #copy that image out to a file
-    file = Tempfile.new(['comp', '.jpg'])
-    comp[0].write("jpeg:"+file.path){ self.quality = 75 }
+    file = Tempfile.new(['comp', '.png'])
+    imagelist[0].write("png:"+file.path)
 
     #create revision
     rev = Revision.new
@@ -51,34 +70,23 @@ class Wall < ActiveRecord::Base
 
     return rev
   end
-  def get_magick_image_from_url url
+
+  def get_imagelist_from_url url
     if url.match(/^\/system/)
       url = "http://localhost:3000#{url.split('?')[0]}"
     end
     comp = Magick::ImageList.new
-    begin
-      urlimage = open(url)
-      comp.from_blob(urlimage.read)
-      return comp
-    rescue Exception => e
-      puts "ERROR: " + e.message
-      return nil
-    end
-  end
-
-  def get_last_revision
-    revision = revisions.last
-    unless revision
-      #create new revision
-      revision = build_revision
-    end
-    return revision
+    urlimage = open(url)
+    comp.from_blob(urlimage.read)
+    return comp
   end
 
   def img_url
     img_url = nil
     if revisions.last
       img_url = revisions.last.image.url
+    else
+      img_url = background.url
     end
     img_url
   end

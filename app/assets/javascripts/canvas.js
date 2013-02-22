@@ -183,6 +183,7 @@ function canvas_event_handler(e) {
 
 function addCanvasClick(e, isDragging) {
     var coords = pageToCanvasCoords(e.gesture.center.pageX, e.gesture.center.pageY);
+    console.debug("Draw at " + coords.x + ", " + coords.y);
     addClick(coords.x, coords.y, isDragging);
 }
 

@@ -63,6 +63,7 @@ function getContainerOffsetTop() {
 }
 
 function init_container(background_image_url) {
+    ctms.push( Matrix.I(3) );
     $("#background").css("max-width", "none !important");
     image = $("#background");
     container = $("#canvas_container");
@@ -74,7 +75,6 @@ function init_container(background_image_url) {
     setTransformOrigin(image[0]);
 
     image.bind("load", function () {
-        console.debug("background load");
         clearTransform();
         imageWidth = this.width;
         imageHeight = this.height;
@@ -82,21 +82,16 @@ function init_container(background_image_url) {
         canvas[0].height = this.height;
         centerImage();
         resizeImageToWindow();
+        updateTransform();
         container.css("width", "100%");
         container.css("height", $(window).height());
-        containerWidth = container.width();
-        containerHeight = container.height();
     });
     image[0].src = background_image_url + "?t="+new Date().getTime();
-    console.debug("loaded url " + background_image_url + "?t="+new Date().getTime());
-
-    ctms.push( Matrix.I(3) );
 }
 
 function resizeImageToWindow() {
     if (container.width() < imageWidth) {
         zoomPage($(window).width() / 2, $(window).height() / 2, container.width() / imageWidth );
-        updateTransform();
     }
 }
 
@@ -113,7 +108,6 @@ function centerImage() {
     var dx = center.x - now.x;
     var dy = center.y - now.y;
     translate(dx, dy);
-    updateTransform();
 }
 
 function unbind_nav_events() {
@@ -202,7 +196,6 @@ function handle_nav_event(e) {
 function clearTransform() {
     ctms = new Array();
     ctms.push( Matrix.I(3) );
-    updateTransform();
 }
 
 function updateTransform() {
