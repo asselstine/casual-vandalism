@@ -18,7 +18,8 @@ class WallsController < ApplicationController
 
   def qrcode
     @wall = Wall.find(params[:id])
-    render 'qrcode', :layout => "raw"
+    @size = 4
+    render 'qrcode', :layout => "qrcode_list"
   end
 
   def show_by_name

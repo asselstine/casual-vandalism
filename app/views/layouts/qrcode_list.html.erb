@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Casual Vandalism</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+
+  <%= javascript_include_tag "application" %>
+
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <style type="text/css">
+      .qr-grid {
+          float: left;
+          width: <%=@size*33%>px;
+          margin: 10px;
+      }
+      .qr-svg {
+          height: <%=@size*33%>px;
+      }
+  </style>
+  <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/hammer-latest.min.js"></script>
+  <script type="text/javascript" src="/js/sylvester.js"></script>
+
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width">
+</head>
+<body>
+
+
+<div class="container">
+
+  <h1>Wall QR Codes
+    <br/>
+    <small>print these off to link to walls in real life</small>
+  </h1>
+
+    <%= yield %>
+
+</div>
+
+</body>
+
+</html>

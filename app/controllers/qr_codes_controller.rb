@@ -1,6 +1,7 @@
 class QrCodesController < ApplicationController
   def all
     @walls = Wall.all
-    render 'all', :layout => "raw"
+    @size = 4
+    render 'all', :layout => "qrcode_list"
   end
 end

@@ -81,9 +81,9 @@ function init_container(background_image_url) {
         canvas[0].width = this.width;
         canvas[0].height = this.height;
         resizeImageToWindow();
+        centerImage();
         container.css("width", "100%");
-        console.debug("setting height: " + imageHeight);
-        container.height(imageHeight);
+        container.css("height", $(window).height());
         containerWidth = container.width();
         containerHeight = container.height();
     });
@@ -99,6 +99,22 @@ function resizeImageToWindow() {
         scale( container.width() / imageWidth );
         updateTransform();
     }
+}
+
+function centerImage() {
+    //original origin x, y
+    var ox = imageWidth / 2;
+    var oy = imageHeight / 2;
+
+    var center = pageToCanvasCoords($(window).width() / 2, $(window).height() / 2);
+
+    var now = invMultiply(ox, oy);
+    now.x //needs to move to container_width / 2
+    now.y //needs to move to container_height / 2
+    var dx = center.x - now.x;
+    var dy = center.y - now.y;
+    translate(dx, dy);
+    updateTransform();
 }
 
 function unbind_nav_events() {
@@ -268,6 +284,10 @@ function formatTransform(ctm) {
 function pageToCanvasCoords(pageX, pageY) {
     var x = pageX - getContainerOffsetLeft();
     var y = pageY - getContainerOffsetTop();
+    return invMultiply(x, y);
+}
+
+function invMultiply(x, y) {
     var vec = peekContext().inv().multiply( Vector.create([x,y,1]) );
     return { x: vec.elements[0], y: vec.elements[1] };
 }
