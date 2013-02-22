@@ -80,8 +80,8 @@ function init_container(background_image_url) {
         imageHeight = this.height;
         canvas[0].width = this.width;
         canvas[0].height = this.height;
-        resizeImageToWindow();
         centerImage();
+        resizeImageToWindow();
         container.css("width", "100%");
         container.css("height", $(window).height());
         containerWidth = container.width();
@@ -94,9 +94,8 @@ function init_container(background_image_url) {
 }
 
 function resizeImageToWindow() {
-    clearTransform();
     if (container.width() < imageWidth) {
-        scale( container.width() / imageWidth );
+        zoomPage($(window).width() / 2, $(window).height() / 2, container.width() / imageWidth );
         updateTransform();
     }
 }
