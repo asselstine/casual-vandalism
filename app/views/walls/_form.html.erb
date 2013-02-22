@@ -23,7 +23,7 @@
         <% end %>
 
         <h4>Name</h4>
-        <%= f.text_field :name, :placeholder=>"enter name" %>
+        <%= f.text_field :name, :placeholder=>"enter name", :maxlength=>"40" %>
 
         <h4>Background</h4>
 
@@ -33,7 +33,6 @@
 
         <%= f.file_field :background, :style=>"display: none;", :id=>"upload-file-field" %>
 
-        <br/>
         <br/>
         <%= f.submit :class=>"btn" %>
       </fieldset>

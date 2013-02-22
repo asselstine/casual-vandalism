@@ -27,6 +27,10 @@ class Wall < ActiveRecord::Base
       comp = get_magick_image_from_url background.url
     else
       comp = get_magick_image_from_url background_url
+      if comp == nil
+        errors[:background_url] = "Invalid background URL"
+        return nil
+      end
     end
 
     for image in images
@@ -55,10 +59,11 @@ class Wall < ActiveRecord::Base
     begin
       urlimage = open(url)
       comp.from_blob(urlimage.read)
+      return comp
     rescue Exception => e
-      puts e.message
+      puts "ERROR: " + e.message
+      return nil
     end
-    return comp
   end
 
   def get_last_revision
@@ -68,6 +73,22 @@ class Wall < ActiveRecord::Base
       revision = build_revision
     end
     return revision
+  end
+
+  def img_url
+    img_url = nil
+    if revisions.last
+      img_url = revisions.last.image.url
+    end
+    img_url
+  end
+
+  def img_square_url
+    img_square_url = nil
+    if (revisions.last)
+      img_square_url = revisions.last.image.url(:square)
+    end
+    img_square_url
   end
 
   def is_owned_by? user

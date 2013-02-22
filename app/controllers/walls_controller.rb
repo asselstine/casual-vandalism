@@ -7,9 +7,6 @@ class WallsController < ApplicationController
   def index
     @walls = Wall.order("updated_at DESC").all
     @current_user = current_user
-    for wall in @walls
-      wall.get_last_revision
-    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @walls }
@@ -42,7 +39,6 @@ class WallsController < ApplicationController
       render 'index'
       return
     end
-    @revision = @wall.get_last_revision
     render "show"
   end
 
@@ -50,7 +46,6 @@ class WallsController < ApplicationController
   # GET /walls/1.json
   def show
     @wall = Wall.find(params[:id])
-    @revision = @wall.get_last_revision
     respond_to do |format|
       format.html { render "show", :layout => "drawing" }
       format.json { render json: @wall }
@@ -82,6 +77,11 @@ class WallsController < ApplicationController
   def create
     @wall = Wall.new(params[:wall])
     @wall.user = current_user
+    begin
+      @wall.build_revision
+    rescue Exception => e
+      @wall.errors[:background_url] = e.message
+    end
 
     respond_to do |format|
       if @wall.save
@@ -106,7 +106,7 @@ class WallsController < ApplicationController
     end
 
     respond_to do |format|
-      if @wall.update_attributes(params[:wall])
+      if @wall.update_attributes(params[:wall]) and @wall.build_revision
         format.html { redirect_to walls_path, notice: 'Wall was successfully updated.' }
         format.json { head :no_content }
       else

@@ -1,16 +1,15 @@
-        <div class="container">
-
+<div class="container">
 
 <h1>Walls <%= link_to "+ New", new_wall_path, :class => "btn btn-primary btn-small" %></h1>
 
-
 <ul class="thumbnails">
+
   <% @walls.each do |wall| %>
 
   <li class="span4">
     <div class="thumbnail">
       <%= link_to wall, :class=>"img" do %>
-        <%= image_tag wall.revisions.last.image.url(:square), :class=>"width100" %>
+        <%= image_tag wall.img_square_url, :class=>"width100" %>
       <% end %>
 
       <div class="caption clearfix">
@@ -26,7 +25,7 @@
         <p class="pull-right">
         <%= link_to 'QR Code', qrcode_wall_path(wall) %>
            |
-        <%= link_to 'Image URL', wall.revisions.last.image.url%>
+        <%= link_to 'Image URL', wall.img_url%>
         </p>
       </div>
     </div>
@@ -34,6 +33,4 @@
 
   <% end %>
 </ul>
-
-
-        </div>
+</div>

@@ -1,14 +1,25 @@
 <div class="container">
 
-    <h1>Editing wall</h1>
+    <div class="row">
+        <div class="span10">
+        <h1>Editing wall</h1>
+        </div>
+    </div>
+  <div class="row">
 
-    <%= image_tag @wall.revisions.last.image.url(:square) %>
-    <br/>
-    <%= link_to 'Remove all paint', clear_wall_path(@wall), :class=>"btn" %>
+    <div class="span5">
 
-    <%= render 'form' %>
+      <%= render 'form' %>
 
-    <%= link_to 'Show', @wall %> |
-    <%= link_to 'Back', walls_path %>
+    </div>
+
+    <div class="span4">
+        <%= image_tag @wall.img_square_url %>
+        <br/>
+        <br/>
+        <%= link_to 'Remove all paint', clear_wall_path(@wall), :class=>"btn" %>
+    </div>
+
+  </div>
 
 </div>
