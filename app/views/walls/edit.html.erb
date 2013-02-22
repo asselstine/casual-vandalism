@@ -1,6 +1,14 @@
-<h1>Editing wall</h1>
+<div class="container">
 
-<%= render 'form' %>
+    <h1>Editing wall</h1>
 
-<%= link_to 'Show', @wall %> |
-<%= link_to 'Back', walls_path %>
+    <%= image_tag @wall.revisions.last.image.url(:square) %>
+    <br/>
+    <%= link_to 'Remove all paint', clear_wall_path(@wall), :class=>"btn" %>
+
+    <%= render 'form' %>
+
+    <%= link_to 'Show', @wall %> |
+    <%= link_to 'Back', walls_path %>
+
+</div>

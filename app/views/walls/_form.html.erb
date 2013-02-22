@@ -5,10 +5,8 @@
       });
   });
 </script>
-<div class="container">
     <%= form_for(@wall, :html => { :multipart => true }) do |f| %>
       <fieldset>
-        <legend>Create Wall</legend>
         <% if alert  %>
             <div class="alert alert-error"><%=alert %></div>
         <% end %>
@@ -37,8 +35,7 @@
 
         <br/>
         <br/>
-        <%= f.submit "Create Wall", :class=>"btn" %>
+        <%= f.submit :class=>"btn" %>
       </fieldset>
 
     <% end %>
-</div>

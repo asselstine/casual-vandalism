@@ -5,7 +5,7 @@ class WallsController < ApplicationController
   # GET /walls
   # GET /walls.json
   def index
-    @walls = Wall.all
+    @walls = Wall.order("updated_at DESC").all
     @current_user = current_user
     for wall in @walls
       wall.get_last_revision
@@ -14,6 +14,17 @@ class WallsController < ApplicationController
       format.html # index.html.erb
       format.json { render json: @walls }
     end
+  end
+
+  def clear
+    @wall = Wall.find(params[:id])
+    unless @wall.is_owned_by? current_user
+      redirect_to "index", notice: "You are not allowed to edit this wall."
+      return
+    end
+    @wall.images.delete_all
+    @wall.build_revision
+    render 'edit'
   end
 
   def qrcode
@@ -96,7 +107,7 @@ class WallsController < ApplicationController
 
     respond_to do |format|
       if @wall.update_attributes(params[:wall])
-        format.html { redirect_to @wall, notice: 'Wall was successfully updated.' }
+        format.html { redirect_to walls_path, notice: 'Wall was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -4,11 +4,7 @@
            Upload photos to be vandalized publicly.
       </p>
       <p>
-        <% if current_user %>
         <%= link_to "See photos", walls_path, :class=>"btn btn-primary btn-large" %>
-        <% else %>
-          <%= link_to "Begin", new_user_session_path, :class=>"btn btn-primary btn-large" %>
-        <% end %>
       </p>
 
 </div>

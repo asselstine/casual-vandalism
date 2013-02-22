@@ -9,7 +9,8 @@ Stallgraffiti::Application.routes.draw do
   resources :walls do
     resources :images
     member do
-       get 'qrcode'
+      get 'qrcode'
+      get 'clear'
     end
   end
 
