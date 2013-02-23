@@ -182,12 +182,16 @@ function canvas_event_handler(e) {
 }
 
 function addCanvasClick(e, isDragging) {
-    var coords = pageToCanvasCoords(e.gesture.center.pageX, e.gesture.center.pageY);
-    console.debug("Draw at " + coords.x + ", " + coords.y);
+    var coords = pageToCanvasCoords$(e.gesture.center.pageX, e.gesture.center.pageY);
+    //console.debug("Draw at " + coords.x + ", " + coords.y);
     addClick(coords.x, coords.y, isDragging);
 }
 
+var containerOffsetLeft;
+var containerOffsetTop;
 function start(e) {
+    containerOffsetLeft = container.offset().left;
+    containerOffsetTop = container.offset().top;
     paint = true;
     addCanvasClick(e, false);
     redraw();
@@ -202,6 +206,8 @@ function move(e) {
 
 function stop(e) {
     paint = false;
+    lastRedraw = 0;
+    redraw();
 }
 
 function addClick(x, y, isDragging) {
@@ -245,8 +251,14 @@ function redo() {
     }
     redraw();
 }
-
+var date = new Date();
+var lastRedraw = 0;
 function redraw() {
+    var now = new Date().getTime();
+    if (now - lastRedraw < 50) {
+        return;
+    }
+    lastRedraw = now;
     context.clearRect ( 0, 0, imageWidth, imageHeight );
 
     for (var i = 0; i < clickHistory.length; i++) {

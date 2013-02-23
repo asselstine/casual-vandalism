@@ -4,9 +4,9 @@ var ctms = [];
 var touchX, touchY;
 var firstTransformTouchX, firstTransformTouchY = 0;
 var lastTransformTouchX, lastTransformTouchY = 0;
+var containerOffsetLeft, containerOffsetTop;
 
 var imageWidth, imageHeight;
-var containerWidth, containerHeight;
 var scaleStep = 1.9;
 var lastGestureScale = 1;
 var container;
@@ -38,8 +38,8 @@ function zoomInPage(pageX, pageY) {
 }
 
 function zoomPage(pageX, pageY, scaleVal) {
-    var centerX = pageX - getContainerOffsetLeft();
-    var centerY = pageY - getContainerOffsetTop();
+    var centerX = pageX - containerOffsetLeft;//getContainerOffsetLeft();
+    var centerY = pageY - containerOffsetTop;//getContainerOffsetTop();
     zoom(centerX, centerY, scaleVal);
 }
 
@@ -68,7 +68,8 @@ function init_container(background_image_url) {
     image = $("#background");
     container = $("#canvas_container");
     canvas = $("#canvas");
-
+    containerOffsetLeft = getContainerOffsetLeft();
+    containerOffsetTop = getContainerOffsetTop();
     $(".btn")
 
     setTransformOrigin(canvas[0]);
@@ -80,17 +81,20 @@ function init_container(background_image_url) {
         imageHeight = this.height;
         canvas[0].width = this.width;
         canvas[0].height = this.height;
+        container.css("width", "100%");
+        container.css("height", $(window).height());
         centerImage();
         resizeImageToWindow();
         updateTransform();
-        container.css("width", "100%");
-        container.css("height", $(window).height());
     });
     image[0].src = background_image_url + "?t="+new Date().getTime();
 }
 
-function resizeImageToWindow() {
-    if (container.width() < imageWidth) {
+function resizeImageToWindow() { //broken implementation- careful assumes that image is centered in window
+    if (imageHeight - container.height() > imageWidth - container.width()) {
+        console.debug("yup ", container.height(), imageHeight, container.height() / imageHeight);
+        zoomPage($(window).width() / 2, $(window).height() / 2, container.height() / imageHeight);
+    } else if (imageWidth > container.width()) {
         zoomPage($(window).width() / 2, $(window).height() / 2, container.width() / imageWidth );
     }
 }
@@ -198,7 +202,13 @@ function clearTransform() {
     ctms.push( Matrix.I(3) );
 }
 
+var lastUpdateTransform = 0;
 function updateTransform() {
+    var now = new Date().getTime();
+    if (now - lastUpdateTransform < 20) {
+        return;
+    }
+    lastUpdateTransform = now;
     var mat = peekContext();
     //console.debug("updateTransform: " + formatTransform(mat));
     setTransform(image[0], mat);
@@ -271,6 +281,12 @@ function formatTransform(ctm) {
     var dy = ctm.row(2).elements[2];
     var scale = ctm.row(1).elements[0];
     return "matrix("+  scale + ", 0, 0, " + scale + ", " + dx + "px, " + dy + "px)";
+}
+
+function pageToCanvasCoords$(pageX, pageY) {
+    var x = pageX - containerOffsetLeft;
+    var y = pageY - containerOffsetTop;
+    return invMultiply(x, y);
 }
 
 function pageToCanvasCoords(pageX, pageY) {
