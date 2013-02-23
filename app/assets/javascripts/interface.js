@@ -91,12 +91,15 @@ function init_container(background_image_url) {
 }
 
 function resizeImageToWindow() { //broken implementation- careful assumes that image is centered in window
-    if (imageHeight - container.height() > imageWidth - container.width()) {
-        console.debug("yup ", container.height(), imageHeight, container.height() / imageHeight);
-        zoomPage($(window).width() / 2, $(window).height() / 2, container.height() / imageHeight);
-    } else if (imageWidth > container.width()) {
-        zoomPage($(window).width() / 2, $(window).height() / 2, container.width() / imageWidth );
+   // console.debug(imageHeight, container.height(), imageWidth, container.width());
+    var heightScale = (container.height()-80) / imageHeight;
+    var widthScale = container.width() / imageWidth;
+    var scale = heightScale;
+    if (widthScale < heightScale) {
+        scale = widthScale;
     }
+    zoomPage($(window).width() / 2, $(window).height() / 2, scale );
+
 }
 
 function centerImage() {
@@ -120,7 +123,7 @@ function unbind_nav_events() {
 }
 
 function bind_nav_events() {
-    console.debug("bind_nav_events");
+    //console.debug("bind_nav_events");
     Hammer( container[0], {
         transform_always_block: true,
         drag_block_horizontal: true,
