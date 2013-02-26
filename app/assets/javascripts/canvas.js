@@ -117,7 +117,7 @@ function init_canvas() {
     });
     $(".undo").click(undo);
     $(".redo").click(redo);
-    $("#upload").click(function () {
+    $(".upload").click(function () {
         upload();
     });
     $("#small").click(function () {
