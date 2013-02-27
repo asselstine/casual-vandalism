@@ -284,38 +284,31 @@ function redraw() {
     }
 }
 
-function getImageBlob() {
-    var dataUrl = canvas[0].toDataURL();
-    var binary = atob(dataUrl.split(',')[1]);
-    var ab = new ArrayBuffer(binary.length);
-    var ia = new Uint8Array(ab);
-    for (var i = 0; i < binary.length; i++) {
-        ia[i] = binary.charCodeAt(i);
-    }
-    return new Blob([ab], {type: 'image/png'});
-}
-
 function upload() {
-    var fd = new FormData();
-    fd.append("image[x]", 0);
-    fd.append("image[y]", 0);
-    fd.append("image[canvas]", getImageBlob());
+
     lock("Please wait.  Uploading drawing...");
+
+    var dataURL = canvas[0].toDataURL();
+    var params = {
+          "image[x]" : 0,
+          "image[y]" : 0,
+          "canvas_data" : dataURL.replace(/^data:image\/(png|jpg);base64,/, "")
+        };
+
     $.ajax({
         url: $("#wall_images_path").html() + ".json",
         type: "POST",
         dataType: "json",
-        data: fd,
+        data: params,
         success: function (data, status) {
             $("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
-
-        },
-        complete : function () {
-            unlock();
             clickHistory = new Array();
             redraw();
         },
-        processData: false,  // tell jQuery not to process the data
-        contentType: false   // tell jQuery not to set contentType
+        complete : function () {
+            unlock();
+        },
+        processData: true  // tell jQuery not to process the data
+        //contentType: false   // tell jQuery not to set contentType
     });
 }

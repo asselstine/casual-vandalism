@@ -54,6 +54,11 @@ class ImagesController < ApplicationController
   def create
     @wall = Wall.find(params[:wall_id])
     @image = Image.new(params[:image])
+    file = Tempfile.new(['blah', '.png'])
+    file.binmode
+    file.write (Base64.decode64(params[:canvas_data]))
+    file.close
+    @image.canvas = file
     @image.wall = @wall
     @wall.images<<@image
     respond_to do |format|
@@ -65,6 +70,7 @@ class ImagesController < ApplicationController
         format.json { render json: @image.errors, status: :unprocessable_entity }
       end
     end
+    file.delete
   end
 
   # PUT /images/1
