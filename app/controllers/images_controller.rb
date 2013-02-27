@@ -74,7 +74,7 @@ class ImagesController < ApplicationController
         end
         last_cmd = cmd
       end
-      img = Magick::Image.new(Integer(params[:w]), Integer(params[:h]))
+      img = Magick::Image.new( [ Integer(params[:w]), 1200].min , [ Integer(params[:h]), 1200 ].min )
       img.alpha(Magick::TransparentAlphaChannel)
       gc.draw(img)
       img.write("png:"+file.path)
