@@ -286,14 +286,20 @@ function redraw() {
 
 function upload() {
 
-    lock("Please wait.  Uploading drawing...");
-
-    var dataURL = canvas[0].toDataURL();
     var params = {
-          "image[x]" : 0,
-          "image[y]" : 0,
-          "canvas_data" : dataURL.replace(/^data:image\/(png|jpg);base64,/, "")
-        };
+        "image[x]" : 0,
+        "image[y]" : 0,
+        "w" : imageWidth,
+        "h" : imageHeight,
+        "draw_list" : encodeDrawList()
+    };
+
+    if (params["draw_list"] == "") {
+        info("Nothing has been drawn!");
+        return;
+    }
+
+    lock("Please wait.  Uploading drawing...");
 
     $.ajax({
         url: $("#wall_images_path").html() + ".json",
@@ -311,4 +317,20 @@ function upload() {
         processData: true  // tell jQuery not to process the data
         //contentType: false   // tell jQuery not to set contentType
     });
+}
+
+function encodeDrawList() {
+    var cmd, draw;
+    var drawList = []
+    var sep = "&";
+    for (var i = 0; i < clickHistory.length; i++) {
+        draw = clickHistory[i];
+        cmd = Math.round(draw.clickX) + sep +
+              Math.round(draw.clickY) + sep +
+              draw.clickDrag + sep +
+              draw.currentColor + sep +
+              draw.currentSize;
+        drawList.push(cmd);
+    }
+    return drawList;
 }

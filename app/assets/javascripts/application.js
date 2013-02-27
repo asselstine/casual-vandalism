@@ -39,11 +39,15 @@ var helpWhichHasBeenSeen = {};
 
 function help(msg) {
     if (!helpWhichHasBeenSeen[msg]) {
-        $("#help-dialog").html(msg);
-        $(".overlay").fadeIn();
-        $("#help-dialog").show();
+        info(msg);
         helpWhichHasBeenSeen[msg] = true;
     }
+}
+
+function info(msg) {
+    $("#help-dialog").html(msg);
+    $(".overlay").fadeIn();
+    $("#help-dialog").show();
 }
 
 function lock(msg) {
