@@ -2,6 +2,10 @@
 
 one:
   name: MyString
+  email: Blah1@fake.com
+  encrypted_password: chingchong
 
 two:
   name: MyString
+  email: Blah2@fake.com
+  encrypted_password: chingchong
