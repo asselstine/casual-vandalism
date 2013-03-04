@@ -3,7 +3,11 @@
 one:
   name: MyString
   header_color: MyString
+  background_url: http://blog.acorn-is.com/wp-content/uploads/apple-full2.jpg
 
 two:
   name: MyString
   header_color: MyString
+  w: 100
+  h: 200
+  color: black

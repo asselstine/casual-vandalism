@@ -21,6 +21,9 @@ var colors = [
 var color = "#df4b26";
 var size = MEDIUM_SIZE;
 
+var drawStartTouchCoords;
+
+var permanentHistory = new Array();
 var clickHistory = new Array();
 
 function pushHistory(x, y, isDragging) {
@@ -193,7 +196,11 @@ function start(e) {
     containerOffsetLeft = container.offset().left;
     containerOffsetTop = container.offset().top;
     paint = true;
-    addCanvasClick(e, false);
+
+    var coords = pageToCanvasCoords$(e.gesture.center.pageX, e.gesture.center.pageY);
+    drawStartTouchCoords = coords;
+    addClick(coords.x, coords.y, false);
+
     redraw();
 }
 
@@ -260,9 +267,9 @@ function redraw() {
     }
     lastRedraw = now;
     context.clearRect ( 0, 0, imageWidth, imageHeight );
-
-    for (var i = 0; i < clickHistory.length; i++) {
-        var recall = clickHistory[i];
+    var drawHistory = permanentHistory.concat(clickHistory);
+    for (var i = 0; i < drawHistory.length; i++) {
+        var recall = drawHistory[i];
         //This block handles begins
         if (i == 0) { //if first path
             context.beginPath();
@@ -275,7 +282,7 @@ function redraw() {
             context.lineTo(recall.clickX, recall.clickY);
         }
 
-        if (i == (clickHistory.length-1) || !clickHistory[i+1].clickDrag) { //if this is the last segment of the path
+        if (i == (drawHistory.length-1) || !drawHistory[i+1].clickDrag) { //if this is the last segment of the path
             context.lineJoin = "round";
             context.strokeStyle = recall.currentColor;
             context.lineWidth = recall.currentSize;
@@ -289,9 +296,9 @@ function upload() {
     var params = {
         "image[x]" : 0,
         "image[y]" : 0,
-        "w" : imageWidth,
-        "h" : imageHeight,
-        "draw_list" : encodeDrawList()
+        "image[w]" : imageWidth,
+        "image[h]" : imageHeight,
+        "image[draw_list]" : encodeDrawList()
     };
 
     if (params["draw_list"] == "") {
@@ -307,7 +314,8 @@ function upload() {
         dataType: "json",
         data: params,
         success: function (data, status) {
-            $("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
+            //$("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
+            permanentHistory.concat(clickHistory);
             clickHistory = new Array();
             redraw();
         },

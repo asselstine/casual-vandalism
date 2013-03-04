@@ -3,6 +3,7 @@ require 'test_helper'
 class WallsControllerTest < ActionController::TestCase
   setup do
     @wall = walls(:one)
+    sign_in users(:one)
   end
 
   test "should get index" do

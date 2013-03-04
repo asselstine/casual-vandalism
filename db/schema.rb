@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221190822) do
+ActiveRecord::Schema.define(:version => 20130304064655) do
 
   create_table "images", :force => true do |t|
     t.integer  "x"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(:version => 20130221190822) do
     t.integer  "canvas_file_size"
     t.datetime "canvas_updated_at"
     t.integer  "wall_id"
+    t.integer  "w"
+    t.integer  "h"
   end
 
   create_table "revisions", :force => true do |t|
@@ -67,6 +69,9 @@ ActiveRecord::Schema.define(:version => 20130221190822) do
     t.integer  "background_file_size"
     t.datetime "background_updated_at"
     t.string   "background_url"
+    t.integer  "w"
+    t.integer  "h"
+    t.string   "color"
   end
 
 end

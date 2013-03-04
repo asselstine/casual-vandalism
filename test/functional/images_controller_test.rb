@@ -3,6 +3,7 @@ require 'test_helper'
 class ImagesControllerTest < ActionController::TestCase
   setup do
     @image = images(:one)
+    sign_in users(:one)
   end
 
   test "should get index" do
@@ -18,7 +19,7 @@ class ImagesControllerTest < ActionController::TestCase
 
   test "should create image" do
     assert_difference('Image.count') do
-      post :create, image: {  }
+      post :create, :wall_id => walls(:one).to_param, image: { :draw_list => ["0&0&false&black&4"] }
     end
 
     assert_redirected_to image_path(assigns(:image))
@@ -35,8 +36,13 @@ class ImagesControllerTest < ActionController::TestCase
   end
 
   test "should update image" do
-    put :update, id: @image, image: {  }
+    put :update, id: @image, image: { :draw_list => ["0&0&false&black&4"] }
     assert_redirected_to image_path(assigns(:image))
+  end
+
+  test "should not update image without draw_list" do
+    put :update, id: @image, image: { }
+    assert_response :success
   end
 
   test "should destroy image" do

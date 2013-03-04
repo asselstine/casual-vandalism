@@ -77,13 +77,6 @@ class WallsController < ApplicationController
   def create
     @wall = Wall.new(params[:wall])
     @wall.user = current_user
-
-    background_url = params[:wall][:background_url]
-    if  background_url and
-        background_url != ""
-      @wall.download_url_as_background(background_url)
-    end
-
     respond_to do |format|
       if @wall.save
         format.html { redirect_to @wall, notice: 'Wall was successfully created.' }
@@ -104,13 +97,6 @@ class WallsController < ApplicationController
     unless @wall.is_owned_by? current_user
       redirect_to "index", notice: "You are not allowed to edit this wall."
       return
-    end
-
-    background_url = params[:wall][:background_url]
-    if  background_url and
-        background_url != "" and
-        background_url != @wall.background_url
-      @wall.download_url_as_background(background_url)
     end
 
     respond_to do |format|

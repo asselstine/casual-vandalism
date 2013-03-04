@@ -1,14 +1,20 @@
 class BackgroundValidator < ActiveModel::Validator
   def validate(record)
-     if /missing/.match(record.background.url) and record.background_url == ""
-       record.errors[:background] << "You must include either a background or url"
-       record.errors[:background_url] << "You must include either a background or url"
+    if !record.upload_file and
+        record.background_url == "" and
+       !( record.w and record.h and record.color )
+       record.errors[:background] << "You must include either a file, url, or dimensions and color"
      end
   end
 end
 
 class Wall < ActiveRecord::Base
-  attr_accessible :header_color, :background_url, :name, :background
+  WIDTH_MAX = 1200
+  HEIGHT_MAX = 1200
+
+  after_save :check_background
+  attr_accessor :upload_file
+  attr_accessible :header_color, :background_url, :name, :background, :w, :h, :color, :upload_file
   has_attached_file :background, #:processors => [:auto_orient],
                     :styles => { :original => "1200x1200>" }
   has_many :revisions, :dependent => :destroy
@@ -19,16 +25,43 @@ class Wall < ActiveRecord::Base
   validates :name, :uniqueness => true
   validates_with BackgroundValidator
 
-  def download_url_as_background(url)
+  def download_url_as_background
     # Download that url to a local file, then set it as the background
     tempfile = Tempfile.new('comp')
     tempfile.binmode
-    tempfile.write open(url).read
+    tempfile.write open(background_url).read
     self.background = tempfile
+    self.background.save
+  end
+
+  def build_background
+    file = Tempfile.new(['blah', '.png'])
+    bg_color = self.color
+    img = Magick::Image.new( [ Integer(w), WIDTH_MAX].min,
+                             [ Integer(h), HEIGHT_MAX ].min ) {
+      self.background_color = bg_color
+    }
+    img.write("png:"+file.path)
+    self.background = file
+  end
+
+  def check_background
+      if upload_file
+        self.background = upload_file
+      elsif background_url and background_url != ""
+        download_url_as_background
+      elsif w and h and (color != "")
+        build_background
+      elsif !background
+        raise "No background is defined."
+      end
   end
 
   #builds a revision using the background image.
   def rebuild_revision
+    if !background?
+      check_background
+    end
     if images.length > 0
       comp = get_imagelist_from_url background.url
       for image in images
@@ -49,9 +82,12 @@ class Wall < ActiveRecord::Base
     if revisions.last
       comp = get_imagelist_from_url revisions.last.image.url
     else
+      if !background?
+        check_background
+      end
       comp = get_imagelist_from_url background.url
     end
-    comp.composite!( get_imagelist_from_url(image.canvas.url), image.x, image.y, Magick::AtopCompositeOp )
+    comp.composite!( get_imagelist_from_url(image.canvas.url), 0, 0, Magick::AtopCompositeOp )
     return new_revision_with_imagelist(comp)
   end
 
@@ -73,7 +109,7 @@ class Wall < ActiveRecord::Base
 
   def get_imagelist_from_url url
     if url.match(/^\/system/)
-      url = "http://localhost:3000#{url.split('?')[0]}"
+      url = "public#{url.split("?")[0]}"
     end
     comp = Magick::ImageList.new
     urlimage = open(url)
