@@ -17,11 +17,17 @@ class WallsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create wall" do
+  test "should create wall with: w, h, color" do
     assert_difference('Wall.count') do
-      post :create, wall: { header_color: @wall.header_color, name: @wall.name }
+      post :create, wall: { w: 100, h: 100, color: "black", name: "This is a new name" }
     end
+    assert_redirected_to wall_path(assigns(:wall))
+  end
 
+  test "should create wall with: url" do
+    assert_difference('Wall.count') do
+      post :create, wall: { background_url: @wall.background_url, name: "This is a different name" }
+    end
     assert_redirected_to wall_path(assigns(:wall))
   end
 
@@ -36,8 +42,11 @@ class WallsControllerTest < ActionController::TestCase
   end
 
   test "should update wall" do
-    put :update, id: @wall, wall: { header_color: @wall.header_color, name: @wall.name }
-    assert_redirected_to wall_path(assigns(:wall))
+    new_name = "Superclasldk"
+    put :update, id: @wall, wall: { name: new_name }
+    wall = assigns(:wall)
+    assert_equal new_name, wall.name
+    assert_redirected_to walls_path
   end
 
   test "should destroy wall" do

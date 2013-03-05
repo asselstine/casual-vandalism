@@ -1,0 +1,24 @@
+section.projects {
+  background-color: white;
+}
+
+section {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 30px;
+  min-height: 800px;
+}
+
+section h1 {
+  font-size: 60px;
+}
+
+.projects div.article {
+  margin-left: 80px;
+  width: 350px;
+  float: left;
+}
+
+.article span {
+  margin-top: 20px;
+}

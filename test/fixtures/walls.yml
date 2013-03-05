@@ -4,6 +4,7 @@ one:
   name: MyString
   header_color: MyString
   background_url: http://blog.acorn-is.com/wp-content/uploads/apple-full2.jpg
+  user: one
 
 two:
   name: MyString

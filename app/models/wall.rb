@@ -43,6 +43,7 @@ class Wall < ActiveRecord::Base
     }
     img.write("png:"+file.path)
     self.background = file
+    self.background.save
   end
 
   def check_background
@@ -128,7 +129,7 @@ class Wall < ActiveRecord::Base
   end
 
   def img_square_url
-    img_square_url = nil
+    img_square_url = ""
     if (revisions.last)
       img_square_url = revisions.last.image.url(:square)
     end
