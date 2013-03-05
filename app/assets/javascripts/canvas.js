@@ -315,7 +315,7 @@ function upload() {
         data: params,
         success: function (data, status) {
             //$("#background").attr("src", data.background_url); //append("<img style='z-index: -1; position: absolute; top: " + data.image.y + "px; left: " + data.image.x + "px;' src='"+data.image_url+"'/>");
-            permanentHistory.concat(clickHistory);
+            permanentHistory = permanentHistory.concat(clickHistory);
             clickHistory = new Array();
             redraw();
         },

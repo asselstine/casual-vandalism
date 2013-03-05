@@ -39,6 +39,7 @@ class Image < ActiveRecord::Base
     gc.draw(img)
     img.write("png:"+file.path)
     self.canvas = file
+    self.canvas.save
   end
 end
 

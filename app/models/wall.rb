@@ -49,10 +49,14 @@ class Wall < ActiveRecord::Base
   def check_background
       if upload_file
         self.background = upload_file
+        self.background.save
+        rebuild_revision
       elsif background_url and background_url != ""
         download_url_as_background
+        rebuild_revision
       elsif w and h and (color != "")
         build_background
+        rebuild_revision
       elsif !background
         raise "No background is defined."
       end
@@ -119,7 +123,7 @@ class Wall < ActiveRecord::Base
   end
 
   def img_url
-    img_url = nil
+    img_url = "/assets/White_square_with_question_mark.png"
     if revisions.last
       img_url = revisions.last.image.url
     else
@@ -129,7 +133,7 @@ class Wall < ActiveRecord::Base
   end
 
   def img_square_url
-    img_square_url = ""
+    img_square_url = "/assets/White_square_with_question_mark.png"
     if (revisions.last)
       img_square_url = revisions.last.image.url(:square)
     end

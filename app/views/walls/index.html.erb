@@ -7,28 +7,31 @@
   <% @walls.each do |wall| %>
 
   <li class="span4">
+
     <div class="thumbnail">
+
       <%= link_to wall, :class=>"img" do %>
-        <%= image_tag wall.img_square_url, :class=>"width100" %>
+          <%= image_tag wall.img_square_url, :class=>"width100" %>
       <% end %>
 
       <div class="caption clearfix">
         <h3><%= link_to wall.name, wall %></h3>
 
         <% if wall.is_owned_by? @current_user %>
-        <p class="pull-left">
-            <%= link_to 'Edit', edit_wall_path(wall) %>
-           |
-            <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
-        </p>
+            <p class="pull-left">
+              <%= link_to 'Edit', edit_wall_path(wall) %>
+              |
+              <%= link_to 'Delete', wall, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </p>
         <% end %>
         <p class="pull-right">
-        <%= link_to 'QR Code', qrcode_wall_path(wall) %>
-           |
-        <%= link_to 'Image URL', wall.img_url%>
+          <%= link_to 'QR Code', qrcode_wall_path(wall) %>
+          |
+          <%= link_to 'Image URL', wall.img_url%>
         </p>
       </div>
     </div>
+
   </li>
 
   <% end %>
