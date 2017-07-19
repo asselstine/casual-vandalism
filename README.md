@@ -9,7 +9,7 @@
 
 ## Live Version
 
-[http://casualvandalism.herokuapp.com](http://casualvandalism.herokuapp.com/)
+[http://casualvandalism.herokuapp.com](http://casualvandalism.herokuapp.com/home/index)
 
 It's running on a free instance so it may take a moment to launch.
 
