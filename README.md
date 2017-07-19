@@ -12,3 +12,7 @@
 [http://casualvandalism.herokuapp.com](http://casualvandalism.herokuapp.com/)
 
 It's running on a free instance so it may take a moment to launch.
+
+## Special features
+
+- Works really well on mobile!  Pinch & zoom and all that stuff.
